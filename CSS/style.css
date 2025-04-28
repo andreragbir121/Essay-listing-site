@@ -1,0 +1,569 @@
+*{
+    color:black;
+    margin: 0;
+    font-family:"poppins";
+}
+  /*_______________Navigation Bar______________________*/
+    /* Horizontal bar sample taken from W3Schools, and adjusted according to insert the logo and profile icon:
+  <p>CSS Horizontal Navigation Bar: <a href="https://www.w3schools.com/css/css_navbar_horizontal.asp#gsc.tab=0&gsc.q=increase%20size%20of%20input%20box%20css"></a></p> */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid black;
+    background-color: #d3d3d3 ;
+}
+
+.navbar-logo{
+height: 60px ;
+width: auto;
+padding-left: 20px;
+}
+
+.Navigation {
+    display: inline-flex;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.navbar a {
+    text-decoration: none;
+}
+.nav-links {
+    margin-left: 25px;
+}
+.nav-links:hover {
+    color: red;
+}
+.nav-option{
+    padding-top: 25px;
+}
+
+
+/* Profile Dropdown */
+.profile-dropdown {
+    display: inline-block;
+    padding: 5px 8px;
+    
+}
+
+.profile-icon img {
+    border: 2px solid black;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;   
+}
+
+.profile-selection {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    width: 150px;
+    padding:  5px 10px;
+}
+
+.profile-options {
+    text-decoration: none;
+    display: block;
+    font-weight: 480;
+
+}
+
+.profile-selection a:hover {
+    background-color: whitesmoke;
+    color: red;
+    cursor: pointer;
+}
+
+.profile-dropdown:hover
+.profile-selection 
+{
+    display: block;
+    z-index: 1;
+}
+
+/* Login Form */
+.login-form {
+    position: absolute;
+    top: 100px;
+    right: 25px;
+    border: 2px solid black;
+    border-radius: 5px;
+    width: 250px;
+    height: auto;
+    padding: 20px;
+}
+
+.user-type {
+    display:inline-flex;
+    margin: 0 50px 20px;
+}
+
+.user {
+    padding: 3px 10px 3px 5px;
+    cursor: pointer;
+    font-weight: 500;
+    background-color: white;
+    border: 2px solid black;
+}
+.user:hover{
+    color: red;
+    background-color: whitesmoke;
+}
+
+.credentials {
+    margin-bottom: 10px;
+}
+
+.login-info{
+    margin: 5px 0px 5px 0px;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 4px;
+    
+}
+.remember-me {
+    display: inline-flex;
+    align-items: center;
+    margin: 5px;
+}
+
+.rem-text{
+    font-size: 15px;
+    padding-left: 7px;
+}
+.login-btn {
+    padding: 5px;
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    margin-bottom: 10px;
+    border: 2px solid black;
+    text-decoration: none;
+    width: 50px;
+    text-align: center; /* Center text inside the button */
+    display: block; /* Makes it take full width */
+    
+}
+
+.login-btn:hover{
+color: red;
+background-color: whitesmoke;
+}
+
+
+.register{
+    padding-top: 20px;
+
+}
+.register-link {
+    font-weight: bold;
+}
+.register-link:hover {
+    color: red;
+
+}
+
+.forgot-psw {
+    font-size: 15px;
+    font-weight: bold;
+
+}
+
+.forgot-psw:hover{
+    color: red;
+
+}
+
+/* Home */
+.logo {
+    width: 500px;
+    height: auto;
+    display: block;
+    margin: 5px auto -60px;
+}
+
+.short-intro {
+    font-size: 50px;
+    font-weight: bold;
+    max-width: 850px;
+    margin: 100px auto;
+    padding: 0;
+    text-align: center;
+}
+
+.short-intro span{
+    font-size: 40px;
+    font-weight:normal;
+}
+
+/*__________________About page_____________________*/
+
+.about{
+    width: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.about-img{
+    height: auto;
+    width: 700px;
+    margin-left: 40px;
+    margin-top: 110px;
+}
+
+.about-heading{
+    font-size: 80px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.about-sub-heading{
+    letter-spacing: 2px;
+    font-size: 22px;
+    margin:0 165px 25px;
+    font-size: 35px;
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 5px solid black;
+}
+
+
+.about-description{
+    letter-spacing: 1px;
+    padding:20px 50px;
+    line-height:28px;
+    font-size: 25px;
+    margin:0 100px 0px;
+}
+
+
+/*Essays*/
+.Essay-heading{
+    font-size: 75px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.essay-list,
+.featured-list
+{
+    text-align: center;
+    font-weight: 400;
+    font-size: 50px;
+    text-align: center;
+}
+
+.top-essays,
+.other-essays
+{
+    position: relative;
+    padding-top: 0px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(520px,auto));
+}
+
+.essay{
+    border: 5px solid black;
+    padding-right: 100px;
+    margin:40px;
+}
+
+.essay-file{
+    width: 525px;
+    height: 500px;
+    zoom: 100%;
+    border: 0;
+}
+
+.essay-info {
+    font-size: 20px;
+    font-weight: 650;
+    margin: 10px 15px;
+}
+
+.essay-info span{
+    font-weight: 350;
+    color: red;
+}
+
+.view-essay {
+    border: 3px solid black;    
+    border-radius: 10px;
+    margin: 20px 180px;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    font-weight: 500;
+    background-color: red;
+    text-decoration: none;
+    padding: 5px 15px;
+    }
+
+.view-essay:hover{
+    color: red;
+    background-color: white;
+}
+
+
+
+/* contact form */
+
+/* Contact form created by splitting the screen in half with the input section on the left, and contact details to the right. Below is guided link to split screen on W3Schools 
+<p>Splitting contact screen <a href="https://www.w3schools.com/howto/howto_css_split_screen.asp"></a></p> */
+
+.contact-heading{
+    font-size: 75px;
+    text-align: center;
+    font-weight: bold;
+    border-top-width: 10px;
+
+}
+
+.contact {
+    width: 45%;
+    top: 0;
+  }
+  .centered {
+    position: absolute;
+    padding: 0;
+    margin-top: 300px;
+  }
+  
+
+.contact-sub-heading-1{
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.contact-sub-heading-2{
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+
+.contact-form{
+    height: auto;
+    margin: auto;
+    padding-top: 80px;
+    margin-left: 25%;
+
+} 
+  
+  .contact-input {
+    border-radius: 2px;
+    height: auto;
+    font-size: 25px;
+    margin-bottom: 25px;
+    width: 600px;
+  } 
+
+  
+.contact-details{
+    right: 0;
+    align-items: center;
+    padding-top: 60px;
+}
+.contact-info{
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.fa-solid{
+    padding-right: 15px;
+    color: red;
+}
+.fa-brands{
+    padding-right: 25px;
+}
+.fa-brands:hover{
+    color: red;
+    cursor: pointer;
+}
+
+.social-media{
+    font-size: 60px;
+    font-weight: 300;
+    padding-top: 15px;
+    border-top: 3px solid black;
+    left: 300px;
+    margin-right: 350px;
+}
+
+.social-media p{
+    font-size: 40px;
+}
+  .contact-submit-btn{
+    width: 200px;
+    height: 35px;
+    margin-top: 20px;
+    font-size: 18px;
+    background-color: red;
+    color: white;
+    border-radius: 30px;
+    align-items: center;
+    margin-left: 150px;
+}
+.contact-submit-btn:hover{
+    color: red;
+    background-color: whitesmoke;
+    cursor:pointer;
+}
+
+
+  /* Registration Form */
+.signup-form{
+
+    width: 360px;
+    height: auto;
+    margin: 50px auto;
+    border-radius: 3px;
+    border: 3px solid black;
+    padding: 10px 400px;
+    background-color: #DBE2E9;
+  }
+
+.reg-logo{
+    width: 400px;
+    height: auto;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+  
+  .form-heading {
+    text-align: center;
+    padding-top: 15px;
+    font-size:50px;
+  }
+
+
+  .reg-instruction {
+    text-align: center;
+  }
+
+  .pfp{
+    margin: 15px 0 0 150px ;
+    width: 60px;
+    height: 60px;
+    align-items: center;
+    border: 3px solid black;
+  }
+  .account-input {
+    width: 100%;
+    margin-top: 15px;
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 7px;
+    font-size: 16px;
+    font-weight:bold;
+  } 
+
+  .account-selection{
+    width: 107%;
+  }
+
+  .terms-and-conditions a {
+    color: red;
+  }
+  .submit-btn{
+    width: 320px;
+    height: 35px;
+    margin-top: 20px;
+    font-size: 18px;
+    color: white;
+    background-color: red;
+    border:1px solid black;
+    border-radius: 30px;
+    align-items: center;
+}
+  .submit-btn:hover{
+    background-color:whitesmoke;
+    color: red;
+    transition: 0.4s;
+    cursor:pointer;
+  }
+
+  .existing-account{
+    text-align: center;
+    font-size: 20px;
+    margin-top: 10px;
+  }
+  .existing-account a {
+    color: red;
+    text-decoration: none;
+  }
+  .existing-account a:hover{
+    color: black;
+  }
+
+
+  /* Essay Detail Page */
+.student-info,
+.instructor-info {
+    margin: auto 20px;
+    background: whitesmoke;
+    border: 2px solid black;
+    display: flex;
+}
+
+.student-details,
+.instructor-details{
+    margin: auto 20px;
+}
+
+
+.instructor-details-container,
+.student-details-container{
+    margin: 10px 0 10px ;
+}
+
+
+.student-icon img,
+.instructor-icon img{
+    border: 2px solid black;
+    width: 100px;
+    height: auto;
+    border-radius: 50%;
+    margin: 10px;
+}
+
+.essay-title{
+    text-align: center;
+    font-size: 50px;
+    padding-bottom: 20px;
+    text-decoration: underline;
+    text-decoration-color: red;
+}
+.student-essay{
+    margin: 20px 200px;
+    font-size: 20px;
+    background-color: whitesmoke;
+    padding: 150px;
+    border: 1px solid black;
+
+}
+
+.essay-details{
+    font-weight: bold;
+}
+.reference{
+    font-style: italic;
+}
+.reference a{
+    color: red;
+}
+
+
+.reference a:hover{
+    color: black;
+}
