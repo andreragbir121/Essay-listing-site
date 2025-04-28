@@ -10,11 +10,7 @@
 
 <?php 
     //connecting to dbase
-    $server = 'localhost';
-    $user = 'root';
-    $pass = '';
-    $dbase = 'brightminds';
-
+    require_once "dbase_connect.php";
 
 // ===================================================================================================================================
 
@@ -83,13 +79,6 @@ if ($uploadOk == 0) {
 
 
 // ============================================================================================================================
-
-    //make the actual connection to mysql and the chose database
-    $conn = mysqli_connect($server, $user, $pass, $dbase);
-    if (!$conn){
-        die('Could not connect to database because: '. mysqli_connect_error());
-    } else echo "You are successully connected to $dbase";
-    
     
     $qry = "INSERT INTO user (pfp, fullName, username, birthDate, parentName, parentEmail, password, schoolName, classLevel) VALUES ('$pfp', '$fullName', '$username', '$birthDate', '$parentName', '$parentEmail', '$password', '$schoolName', '$classLevel');";
 

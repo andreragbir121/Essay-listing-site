@@ -33,7 +33,7 @@
         </div>
         </nav>
 
-        <form class="login-form">
+        <form  class="login-form" method = "post" action = "PHP/verify_login.php">
 
             <div class = "user-type">
             <button class="user" type="button">Student</button>
@@ -51,8 +51,7 @@
         </div>
         
             
-
-        <a href="HTML/Login.html" class="login-btn">Login</a>
+        <input type="submit" class="login-btn" id = "submit" name="submit" value="Login"/>
         <a class="forgot-psw" href="">Forgot your password?</a>
 
         <p class = "register" >Don't have an account yet?<a href="HTML/Register.html" class="register-link"> Register</a></p>
