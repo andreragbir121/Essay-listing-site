@@ -54,7 +54,7 @@
         <input type="submit" class="login-btn" id = "submit" name="submit" value="Login"/>
         <a class="forgot-psw" href="">Forgot your password?</a>
 
-        <p class = "register" >Don't have an account yet?<a href="HTML/Register.html" class="register-link"> Register</a></p>
+        <p class = "register" >Don't have an account yet?<a href="PHP/registration.php" class="register-link"> Register</a></p>
         
         </form>
         
