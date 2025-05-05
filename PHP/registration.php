@@ -29,78 +29,146 @@
         </div>
     </div>
     </nav>
-   
 
+    
+<?php
 
-    <div class="signup-form">
-        <h2 class="form-heading">Sign Up</h2>
-        <h4 class="reg-instruction">It's simple and easy</h4>
-        <img class="reg-logo" src="../IMGS/LOGO/Logo.png" alt="">
-
-        <form class = "account-info" method ="POST" action="../PHP/registration.php" enctype="multipart/form-data">
-
-          <!-- inserting on image file https://stackoverflow.com/questions/3828554/how-to-allow-input-type-file-to-accept-only-image-files -->
-          <input class="pfp" type="file" id = "pfp" name = "pfp">
-          
-          <!-- <select class="account-input account-selection" name="userType" id="userType" title="userType">
-            <option value="" disabled selected>User Type</option>
-              <option value="student">Student</option>
-              <option value="instructor">Instructor</option>
-          </select>
-          <input class="account-input" id="instructorID" name="instructorID" type="number" placeholder="Instructor ID (Only for Instructors) "><br> -->
-
-          <input class="account-input" id="fulName" name="fullName" type="text" placeholder="Full Name "><br>
-
-          <!-- <input class="account-input" id="email" name="email" type="email" placeholder="Email"><br> -->
-
-          <input  class="account-input" id="username" name="username" type="text" placeholder="username"><br>
-          
-          <input class="account-input" id="birthDate" name = "birthDate" type="text" placeholder ="Date of Birth" onfocus="(this.type = 'date')">
-
-          <input class="account-input" id="parentName" name="parentName" type="text" placeholder="Parent Full Name"><br>
-
-          <input class="account-input" id="parentEmail" name="parentEmail" type="email" placeholder="Parent Email"><br>
-
-          
-          
-          <select class="account-input account-selection" name="schoolName" id="schoolName" title="schoolName">
-            <option value="" disabled selected>School</option>
-              <option value="Penal_Secondary_School">Penal Secondary School</option>
-              <option value="Shiva_Boys_Hindu_College">Shiva Boys Hindu College</option>
-              <option value="Iere_High_School">Iere High School</option>
-              <option value="Debe_High_School">Debe High School</option>
-          </select>
-
-
-          <select  class="account-input account-selection" title="classLevel" name="classLevel" id="classLevel" >
-            <option value="" disabled selected>Class Level</option>
-              <option value="form1">Form 1</option>
-              <option value="form2">Form 2</option>
-              <option value="form3">Form 3</option>
-              <option value="form4">Form 4</option>
-              <option value="form5">Form 5</option>
-          </select>
-
-
-          <input class="account-input" id="password" name="password" type="password" placeholder="Password"><br>
-
-
-
-          <p class="terms-and-conditions" >By registering I agree that I have read the <a href="../DOCS/terms-and-conditions-template.pdf">terms and condition</a></p>
-          <button type="submit" class="submit-btn">Submit</button>
-        </form>
-
-        <p class="existing-account">Already have an account? <br> <a href="../index.html">Login here</a></p>
-
-      </div>
-
-<?php 
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_GET["submit"])) {
-    //connecting to dbase
-    require_once "dbase_connect.php";
+//connecting to dbase
+require_once "dbase_connect.php";
 
 // ===================================================================================================================================
+  // Data Validation Part: 
 
+$fullName = $username = $birthDate = $parentName = $parentEmail = $schoolName = $classLevel = "";
+$fullNameErr = $usernameErr = $birthDateErr = $parentNameErr = $parentEmailErr = $schoolNameErr = $classLevelErr = $passwordErr = "";
+
+$valid = true;
+
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["submit"])) {
+      $secret_message = "The form was submitted!";
+
+
+      if (empty($_POST["fullName"])) {
+
+        $fullNameErr = "Full name is required";
+        $valid = false;
+    }
+    else {
+        $fullName = $_POST["fullName"];
+        $fullName = test_input($fullName); 
+
+        if (!preg_match("/[a-zA-Z]+[ a-zA-Z]*/", $fullName)) {     
+            $fullNameErr = "Name may only contain letters or ' ! and -";
+            $valid = false;
+        }
+    }
+
+  
+  if (empty($_POST["username"])) {
+
+    $usernameErr = "username is required";
+    $valid = false;
+}
+else {
+    $username = $_POST["username"];
+    $username = test_input($username);
+
+    if (!preg_match("/^[a-zA-Z0-9_\-!@#$%^&*()+=.,;:]+$/", $username)) {
+        $usernameErr = "username may only contain letters, numbers and special characters. No spaces";
+        $valid = false;
+    }
+}
+
+
+ 
+if (empty($_POST["birthDate"])) {
+
+  $birthDateErr = "birth Date is required";
+  $valid = false;
+}
+else {
+  $birthDate = $_POST["birthDate"];
+  $dateOfBirth = test_input($birthDate);
+
+  if (!preg_match("[a-zA-Z]+[ a-zA-Z]*", $birthDate)) {
+      $birthDateErr = "username may only contain letters, numbers and special characters. No spaces";
+      $valid = false;
+  }
+}
+
+
+if (empty($_POST["parentName"])) {
+
+  $parentNameErr = "Parent full name is required";
+  $valid = false;
+}
+else {
+  $parentName = $_POST["parentName"];
+  $parentName = test_input($parentName); 
+
+  if (!preg_match("/[a-zA-Z]+[ a-zA-Z]*/", $parentName)) {
+      $parentNameErr = "Name may only contain letters or ' ! and -";
+      $valid = false;
+  }
+}
+
+if (empty($_POST["parentEmail"])) {
+
+  $parentEmailErr = "Parent email is required";
+  $valid = false;
+}
+else {
+  $parentEmail = $_POST["parentEmail"];
+  $parentEmail = test_input($parentEmail);
+
+  if (!preg_match("/^[a-zA-Z0-9]{3,24}@[ a-zA-Z0-9]{2,40}.[a-zA-Z]{2,4}$/", $parentEmail)) {
+      $parentEmailErr = "email can only contain letters and special char";
+      $valid = false;
+  }
+}
+
+
+if (empty($_POST["schoolName"])) {
+    $schoolNameErr = "School selection is required";
+    $valid = false;
+} else {
+    $schoolName = test_input($_POST["schoolName"]);
+}
+
+
+if (empty($_POST["classLevel"])) {
+    $classLevelErr = "Class level is required";
+    $valid = false;
+} else {
+    $classLevel = test_input($_POST["classLevel"]);
+}
+
+if (empty($_POST["classLevel"])) {
+  $classLevelErr = "Class level is required";
+  $valid = false;
+} else {
+  $classLevel = test_input($_POST["classLevel"]);
+}
+
+
+if (empty($_POST["password"])) {
+
+  $passwordErr = "password is required";
+  $valid = false;
+}
+else {
+  $password = $_POST["password"];
+  $password = test_input($password);
+
+  // Regex for password taken from : https://uibakery.io/regex-library/password 
+  if (!preg_match("/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/", $password)) {
+      $passwordErr = "email can only contain letters and special char";
+      $valid = false;
+  }
+}
+
+// Image Uploading: 
 $target_dir = "uploads/";
 $target_file = $target_dir . basename($_FILES["pfp"]["name"]);
 $uploadOk = 1;
@@ -181,6 +249,91 @@ if ($uploadOk == 0) {
 
     if($result) echo '<br><br>record successfully inserted.<br><br>';
   }
+
+  function test_input($data)
+  {
+      $data = trim($data);
+      $data = stripslashes($data);
+      $data = htmlspecialchars($data);
+      return $data;
+  }
+
+  // ===================================================================================================================================
+
 ?>
+
+    <div class="signup-form">
+        <h2 class="form-heading">Sign Up</h2>
+        <h4 class="reg-instruction">It's simple and easy</h4>
+        <img class="reg-logo" src="../IMGS/LOGO/Logo.png" alt="">
+
+        <form class = "account-info" method ="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" onsubmit="return validate();">
+
+          <!-- inserting on image file https://stackoverflow.com/questions/3828554/how-to-allow-input-type-file-to-accept-only-image-files -->
+          <input class="pfp" type="file" id = "pfp" name = "pfp">
+          
+          <!-- <select class="account-input account-selection" name="userType" id="userType" title="userType">
+            <option value="" disabled selected>User Type</option>
+              <option value="student">Student</option>
+              <option value="instructor">Instructor</option>
+          </select>
+          <input class="account-input" id="instructorID" name="instructorID" type="number" placeholder="Instructor ID (Only for Instructors) "><br> -->
+
+          <input class="account-input" id="fullName" name="fullName" type="text" placeholder="Full Name" value="<?php echo $fullName; ?>"/><br>
+          <span id="fullNameErr" class="error"><?php echo $fullNameErr; ?></span>
+
+
+          <!-- <input class="account-input" id="email" name="email" type="email" placeholder="Email"><br> -->
+
+          <input  class="account-input" id="username" name="username" type="text" placeholder="username" value="<?php echo $username; ?>"/><br>
+          <span id="usernameErr" class="error"><?php echo $usernameErr; ?></span>
+
+          
+          <input class="account-input" id="birthDate" name = "birthDate" type="text" placeholder ="Date of Birth" onfocus="(this.type = 'date')"value="<?php echo $birthDate; ?>"/>
+          <span id="birthDateErr" class="error"><?php echo $birthDateErr; ?></span>
+
+
+          <input class="account-input" id="parentName" name="parentName" type="text" placeholder="Parent Full Name" value="<?php echo $parentName; ?>"/><br>
+          <span id="parentNameErr" class="error"><?php echo $parentNameErr; ?></span>
+
+
+          <input class="account-input" id="parentEmail" name="parentEmail" type="email" placeholder="Parent Email" value="<?php echo $parentEmail; ?>"/><br>
+          <span id="parentEmailErr" class="error"><?php echo $parentEmailErr; ?></span>
+          
+          
+          <select class="account-input account-selection" name="schoolName" id="schoolName" title="schoolName" value="<?php echo $schoolName; ?>"/><br>
+            <option value="" disabled selected>School</option>
+              <option value="Penal_Secondary_School">Penal Secondary School</option>
+              <option value="Shiva_Boys_Hindu_College">Shiva Boys Hindu College</option>
+              <option value="Iere_High_School">Iere High School</option>
+              <option value="Debe_High_School">Debe High School</option>
+          </select>
+          <span id="schoolNameErr" class="error"><?php echo $schoolNameErr; ?></span>
+
+          <select  class="account-input account-selection" title="classLevel" name="classLevel" id="classLevel" value="<?php echo $classLevel; ?>"/><br>
+            <option value="" disabled selected>Class Level</option>
+              <option value="form1">Form 1</option>
+              <option value="form2">Form 2</option>
+              <option value="form3">Form 3</option>
+              <option value="form4">Form 4</option>
+              <option value="form5">Form 5</option>
+          </select>
+          <span id="classLevelErr" class="error"><?php echo $classLevelErr; ?></span>
+
+        
+          <input class="account-input" id="password" name="password" type="password" placeholder="password"value="<?php echo $password; ?>"/><br>
+          <span id="passwordErr" class="error"><?php echo $passwordErr; ?></span>
+
+
+          <p class="terms-and-conditions" >By registering I agree that I have read the <a href="../DOCS/terms-and-conditions-template.pdf">terms and condition</a></p>
+
+
+          <input type="submit" name="submit" class="submit-btn">
+        </form>
+
+        <p class="existing-account">Already have an account? <br> <a href="../index.html">Login here</a></p>
+
+      </div>
+
 </body>
 </html>
