@@ -11,13 +11,60 @@
 </head>
 <body>
 	<?php
+
+	
         require_once 'dbase_connect.php';
 		
 		//retrieve login form data
 		$username = $_POST['username'];
-		$pass = $_POST['password'];
+		$password = $_POST['password'];
 
 
+
+		$username = $password = "";
+		$usernameErr = $passwordErr = "";
+
+		$valid = true;
+
+
+		if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["submit"])) {
+
+
+
+
+		if (empty($_POST["username"])) {
+
+			$usernameErr = "username is required";
+			$valid = false;
+		}
+		else {
+			$username = $_POST["username"];
+			$username = test_input($username);
+		
+			if (!preg_match("/^[a-zA-Z0-9_\-!@#$%^&*()+=.,;:]+$/", $username)) {
+				$usernameErr = "username may only contain letters, numbers and special characters. No spaces";
+				$valid = false;
+			}
+		}
+
+		
+if (empty($_POST["password"])) {
+
+	$passwordErr = "password is required";
+	$valid = false;
+  }
+  else {
+	$password = $_POST["password"];
+	$password = test_input($password);
+  
+	// Regex for password taken from : https://uibakery.io/regex-library/password 
+	if (!preg_match("/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/", $password)) {
+		$passwordErr = "email can only contain letters and special char";
+		$valid = false;
+	}
+  }
+		
+			
 		$query = "select * from user where username = '$username'";
 		$result = null; 
 
@@ -31,7 +78,7 @@
 		if ($result){
 			if (mysqli_num_rows($result) > 0){
 				$row = mysqli_fetch_assoc($result);
-				// $login_success = password_verify($password, $row['password']);
+				$login_success = password_verify($password, $row['password']);
                 $login_success = ($pass === $row['password']);
 
 				if ($login_success){
@@ -55,6 +102,7 @@
 			else echo "Login credentials invalid, Please try again.";
 		}
 		mysqli_close($conn);
+		}
 	?>
 </body>
 </html>

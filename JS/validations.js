@@ -4,10 +4,11 @@ function validate(){
 	
 	let valid = true;
 		
-	let fname_element = document.getElementById('fname');// retrieves the input object with ID fname.
+	// full name - supposed to be for both registration and contact form 
+	let fullName_element = document.getElementById('fullName');
 	let fname_regex = /^[a-zA-Z'!-]{2,30}$/;//matches all letters, apostrophes, exclamation, and hyphen characters
 
-	if (!fname_regex.test(fname_element.value)){
+	if (!fullName_regex.test(fullName_element.value)){
 		fname_element.value = "";
 		fname_element.focus();
 		fname_element.style.backgroundColor = "#ff5555";

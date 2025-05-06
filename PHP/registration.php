@@ -39,15 +39,13 @@ require_once "dbase_connect.php";
 // ===================================================================================================================================
   // Data Validation Part: 
 
-$fullName = $username = $birthDate = $parentName = $parentEmail = $schoolName = $classLevel = "";
-$fullNameErr = $usernameErr = $birthDateErr = $parentNameErr = $parentEmailErr = $schoolNameErr = $classLevelErr = $passwordErr = "";
+$fullName = $username = $birthDate = $parentName = $parentEmail = $schoolName = $classLevel = $passwordConfirm = "";
+$fullNameErr = $usernameErr = $birthDateErr = $parentNameErr = $parentEmailErr = $schoolNameErr = $classLevelErr = $passwordErr = $passwordConfirmErr = "";
 
 $valid = true;
 
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["submit"])) {
-      $secret_message = "The form was submitted!";
-
 
       if (empty($_POST["fullName"])) {
 
@@ -67,7 +65,7 @@ $valid = true;
   
   if (empty($_POST["username"])) {
 
-    $usernameErr = "username is required";
+    $usernameErr = "A username is required";
     $valid = false;
 }
 else {
@@ -82,20 +80,20 @@ else {
 
 
  
-if (empty($_POST["birthDate"])) {
+// if (empty($_POST["birthDate"])) {
 
-  $birthDateErr = "birth Date is required";
-  $valid = false;
-}
-else {
-  $birthDate = $_POST["birthDate"];
-  $dateOfBirth = test_input($birthDate);
+//   $birthDateErr = "Birth Date is required";
+//   $valid = false;
+// }
+// else {
+//   $birthDate = $_POST["birthDate"];
+//   $dateOfBirth = test_input($birthDate);
 
-  if (!preg_match("[a-zA-Z]+[ a-zA-Z]*", $birthDate)) {
-      $birthDateErr = "username may only contain letters, numbers and special characters. No spaces";
-      $valid = false;
-  }
-}
+//   if (!preg_match("[a-zA-Z]+[ a-zA-Z]*", $birthDate)) {
+//       $birthDateErr = "username may only contain letters, numbers and special characters. No spaces";
+//       $valid = false;
+//   }
+// }
 
 
 if (empty($_POST["parentName"])) {
@@ -163,10 +161,24 @@ else {
 
   // Regex for password taken from : https://uibakery.io/regex-library/password 
   if (!preg_match("/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/", $password)) {
-      $passwordErr = "email can only contain letters and special char";
+      $passwordErr = "Password must be at least 8 characters long and include an uppercase letter, lowercase letter, number, and symbol";
       $valid = false;
   }
 }
+
+if (empty($_POST["passwordConfirm"])) {
+    $passwordConfirmErr = "Please confirm your password";
+    $valid = false;
+} else {
+    $passwordConfirm = $_POST["passwordConfirm"];
+    $passwordConfirm = test_input($passwordConfirm);
+    
+    if ($password !== $passwordConfirm) {
+        $passwordConfirmErr = "Passwords do not match";
+        $valid = false;
+    }
+}
+if(!($password===$passwordConfirm))die("The passwords do not Match.  Please return to registration page");
 
 // Image Uploading: 
 $target_dir = "uploads/";
@@ -228,13 +240,13 @@ if ($uploadOk == 0) {
     $schoolName = $_POST["schoolName"];
     $classLevel = $_POST["classLevel"];
     
-
 // =============================================================================================================================
 
 
 
 // ============================================================================================================================
-    
+    $password = password_hash ($password, PASSWORD_DEFAULT);
+
     $qry = "INSERT INTO user (pfp, fullName, username, birthDate, parentName, parentEmail, password, schoolName, classLevel) VALUES ('$pfp', '$fullName', '$username', '$birthDate', '$parentName', '$parentEmail', '$password', '$schoolName', '$classLevel')";
 
     $result = null;
@@ -267,7 +279,7 @@ if ($uploadOk == 0) {
         <h4 class="reg-instruction">It's simple and easy</h4>
         <img class="reg-logo" src="../IMGS/LOGO/Logo.png" alt="">
 
-        <form class = "account-info" method ="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" onsubmit="return validate();">
+        <form class = "account-info" method ="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" onsubmit="return validate()">
 
           <!-- inserting on image file https://stackoverflow.com/questions/3828554/how-to-allow-input-type-file-to-accept-only-image-files -->
           <input class="pfp" type="file" id = "pfp" name = "pfp">
@@ -324,6 +336,9 @@ if ($uploadOk == 0) {
           <input class="account-input" id="password" name="password" type="password" placeholder="password"value="<?php echo $password; ?>"/><br>
           <span id="passwordErr" class="error"><?php echo $passwordErr; ?></span>
 
+          <input class="account-input" id="passwordConfirm" name="passwordConfirm" type="password" placeholder="Confirm Password"value="<?php echo $passwordConfirm; ?>"/><br>
+          <span id="passwordErr" class="error"><?php echo $passwordConfirmErr; ?></span>
+
 
           <p class="terms-and-conditions" >By registering I agree that I have read the <a href="../DOCS/terms-and-conditions-template.pdf">terms and condition</a></p>
 
@@ -331,7 +346,7 @@ if ($uploadOk == 0) {
           <input type="submit" name="submit" class="submit-btn">
         </form>
 
-        <p class="existing-account">Already have an account? <br> <a href="../index.html">Login here</a></p>
+        <p class="existing-account">Already have an account? <br> <a href="../index.php">Login here</a></p>
 
       </div>
 
