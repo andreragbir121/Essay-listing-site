@@ -145,17 +145,17 @@ function test_input($data)
     Splitting contact screen <a href="https://www.w3schools.com/howto/howto_css_split_screen.asp-->
 
 <div class="contact contact-input centered">
-    <form method="POST" class="contact-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return validate()">
+    <form method="POST" class="contact-form" name = "contact" id="contact" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return validate()">
         
         <input class="contact-input" id="fullName" name="fullName" type="text" placeholder="Full Name" value="<?php echo $fullName; ?>"/>
         <span id="fullNameErr" class="error"><?php echo $fullNameErr; ?></span>
 
 
-        <input class="contact-input" id="Email" name="Email" type="Email" placeholder="Email" value="<?php echo $Email; ?>"/>
+        <input class="contact-input" id = "Email" name="Email" type="Email" placeholder="Email" value="<?php echo $Email; ?>"/>
         <span id="EmailErr" class="error"><?php echo $EmailErr; ?></span>
 
 
-        <input class="contact-input" id="phNumber" name="phNumber" type="tel"   placeholder="Phone Number" value="<?php echo $Email; ?>"/><br>   <!--W3Schools.com. (n.d.). https://www.w3schools.com/Tags/att_input_type_tel.asp-->
+        <input class="contact-input" id = "phNumber" name="phNumber" type="tel" placeholder="Phone Number" value="<?php echo $phNumber; ?>"/><br>   <!--W3Schools.com. (n.d.). https://www.w3schools.com/Tags/att_input_type_tel.asp-->
         <span id="phNumberErr" class="error"><?php echo $phNumberErr; ?></span>
 
 
@@ -184,6 +184,7 @@ function test_input($data)
     </div>
 </div>  
 
+<script type="text/javascript" src="../JS/contactValidation.js"></script>
 
 </body>
 </html>

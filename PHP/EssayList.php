@@ -63,18 +63,34 @@
                     <p class='essay-info'>Essay Title: <span>{$row['essayTitle']}</span></p>
                     <p class='essay-info'>Essay Rating: <span>{$row['essayRating']}</span></p>
                     <p class='essay-info'>First Paragraph: <span>{$row['essayFirstParagraph']}</span></p>
-                   
-
                     <a href=\"essayDetails.php?username={$row['username']}\" class='view-essay'>View</a>
-                </div>";
+                </div>  ";
+
+
+
             }
         } else {
             echo "<br>Query executed. No records found ."; 
         }
     } 
+    echo "<div class='essay'>
+     <a class = 'essay-add' href='Contact.php'>
+     <i class='essay-add fa-sharp fa-solid fa-plus'></i>
+     <span>Add Essay</span>
+     </a>
+     </div>";
     
     mysqli_close($conn);
     ?>
-    </div>
+
+
+    <div class='essay'>
+     <a class = 'essay-add' href='Contact.php'>
+    
+     <span>Add Essay</span>
+    <i class='essay-add fa-sharp fa-solid fa-plus'></i>
+
+     </a>
+     </div>
 </body>
 </html>

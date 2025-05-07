@@ -203,5 +203,7 @@
     </div>
 </div>
 
+<script type="text/javascript" src="JS/validations.js"></script>
+
 </body>
 </html>

@@ -178,7 +178,7 @@ if (empty($_POST["passwordConfirm"])) {
         $valid = false;
     }
 }
-if(!($password===$passwordConfirm))die("The passwords do not Match.  Please return to registration page");
+// if(!($password===$passwordConfirm))die("The passwords do not Match.  Please return to registration page");
 
 // Image Uploading: 
 $target_dir = "uploads/";
@@ -230,15 +230,15 @@ if ($uploadOk == 0) {
     $pfp = $_POST && $_FILES["pfp"];
     // $userType = $_POST["userType"];
     // $instructorID = $_POST["instructorID"];
-    $fullName = $_POST["fullName"];
-    // $email = $_POST["email"];
-    $username = $_POST["username"];
-    $birthDate = $_POST["birthDate"];
-    $parentName = $_POST["parentName"];
-    $parentEmail = $_POST ["parentEmail"];
-    $password = $_POST ["password"];
-    $schoolName = $_POST["schoolName"];
-    $classLevel = $_POST["classLevel"];
+    // $fullName = $_POST["fullName"];
+    // // $email = $_POST["email"];
+    // $username = $_POST["username"];
+    // $birthDate = $_POST["birthDate"];
+    // $parentName = $_POST["parentName"];
+    // $parentEmail = $_POST ["parentEmail"];
+    // $password = $_POST ["password"];
+    // $schoolName = $_POST["schoolName"];
+    // $classLevel = $_POST["classLevel"];
     
 // =============================================================================================================================
 
@@ -279,7 +279,7 @@ if ($uploadOk == 0) {
         <h4 class="reg-instruction">It's simple and easy</h4>
         <img class="reg-logo" src="../IMGS/LOGO/Logo.png" alt="">
 
-        <form class = "account-info" method ="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" onsubmit="return validate()">
+        <form class = "account-info" method = "POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" onsubmit="return validate()">
 
           <!-- inserting on image file https://stackoverflow.com/questions/3828554/how-to-allow-input-type-file-to-accept-only-image-files -->
           <input class="pfp" type="file" id = "pfp" name = "pfp">
@@ -349,6 +349,7 @@ if ($uploadOk == 0) {
         <p class="existing-account">Already have an account? <br> <a href="../index.php">Login here</a></p>
 
       </div>
+      <script type="text/javascript" src="../JS/RegValidations.js"></script>
 
 </body>
 </html>

@@ -278,6 +278,8 @@ background-color: whitesmoke;
     border: 5px solid black;
     padding-right: 100px;
     margin:40px;
+    position: relative;
+    min-height: 500px; 
 }
 
 .essay-file{
@@ -569,4 +571,37 @@ background-color: whitesmoke;
 
 .reference a:hover{
     color: black;
+}
+
+
+.essay-add {
+    display: flex; 
+    text-decoration: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+ 
+
+
+}
+
+.essay-add i {
+    align-items: center;
+    justify-content: center;
+    font-size: 200px;
+    font-weight: bold;
+    position:absolute;
+    top: 0%;
+    bottom: 20%;
+    right: 32%;
+}
+
+.essay-add span {
+    font-size: 50px;
+    font-weight: bold;
+    position:absolute;
+    top: 60%;
+    bottom: 20%;
+    right: 25%;
 }
