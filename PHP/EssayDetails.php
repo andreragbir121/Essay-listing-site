@@ -57,16 +57,16 @@ if ($result) {
                         <p class='student-detail'>Username: <span>{$row['username']}</span></p>
                         <p class='student-detail'>Student Name: <span>{$row['studentName']}</span></p>
                         <p class='student-detail'>School: <span>{$row['schoolName']}</span></p>
-                        <p class='student-detail'>Class: <span>{$row['studentClass']}</span></p>
-                        <p class='student-detail'>Date: <span>{$row['date']}</span></p>
-                        <p class='student-detail'>Grade: <span>{$row['grade']}</span></p>
+                        <p class='student-detail'>Class: <span>{$row['classLevel']}</span></p>
+                        <p class='student-detail'>Date: <span>{$row['essayDate']}</span></p>
+                        <p class='student-detail'>Grade: <span>{$row['essayGrade']}</span></p>
 
                     </div>
                 </div>
                 
                 <div class='essay-content'>
                     <h1 class='essay-title'>{$row['essayTitle']}</h1>
-                    <p class='student-detail'>{$row['content']}</p>
+                    <p class='student-detail'>{$row['fullEssay']}</p>
                 </div>
             </div>";
         }
@@ -84,4 +84,4 @@ mysqli_close($conn);
             <a href="https://englishluv.com/short-essay-writing/">https://englishluv.com/short-essay-writing/</a></p>
 
 </body>
-</html>
+</html> content

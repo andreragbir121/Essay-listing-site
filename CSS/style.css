@@ -344,25 +344,18 @@ background-color: whitesmoke;
   }
   
 
-.contact-sub-heading-1{
-    font-size: 40px;
-    text-align: center;
-    margin-bottom: 0;
-}
-
+.contact-sub-heading-1,
 .contact-sub-heading-2{
     font-size: 40px;
     text-align: center;
     margin-bottom: 0;
 }
 
-
 .contact-form{
     height: auto;
     margin: auto;
     padding-top: 80px;
     margin-left: 25%;
-
 } 
   
   .contact-input {
@@ -427,8 +420,9 @@ background-color: whitesmoke;
 
 
   /* Registration Form */
-.signup-form{
-
+.essayUpload-form,
+.signup-form
+{
     width: 360px;
     height: auto;
     margin: 50px auto;
@@ -437,6 +431,7 @@ background-color: whitesmoke;
     padding: 10px 400px;
     background-color: #DBE2E9;
   }
+
 
 .reg-logo{
     width: 400px;
@@ -452,7 +447,9 @@ background-color: whitesmoke;
   }
 
 
-  .reg-instruction {
+.reg-instruction,
+.Upload-instruction 
+  {
     text-align: center;
   }
 
@@ -463,6 +460,7 @@ background-color: whitesmoke;
     align-items: center;
     border: 3px solid black;
   }
+  .essay-input,
   .account-input {
     width: 100%;
     margin-top: 15px;
@@ -510,6 +508,31 @@ background-color: whitesmoke;
   .existing-account a:hover{
     color: black;
   }
+
+
+  /* essay uploading page */
+  .essayUpload-form{
+    width: 1000px;
+  }
+
+
+    .essay-input,
+    .account-input {
+      width: 100%;
+      margin-top: 15px;
+      padding: 10px;
+      border: 2px solid black;
+      border-radius: 7px;
+      font-size: 16px;
+      font-weight:bold;
+      display: flex;
+      flex-wrap: wrap;
+    } 
+
+
+
+    
+
 
 
   /* Essay Detail Page */

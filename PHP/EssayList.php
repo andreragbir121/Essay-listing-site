@@ -74,7 +74,7 @@
         }
     } 
     echo "<div class='essay'>
-     <a class = 'essay-add' href='Contact.php'>
+     <a class = 'essay-add' href='EssayUpload.php'>
      <i class='essay-add fa-sharp fa-solid fa-plus'></i>
      <span>Add Essay</span>
      </a>
@@ -82,15 +82,5 @@
     
     mysqli_close($conn);
     ?>
-
-
-    <div class='essay'>
-     <a class = 'essay-add' href='Contact.php'>
-    
-     <span>Add Essay</span>
-    <i class='essay-add fa-sharp fa-solid fa-plus'></i>
-
-     </a>
-     </div>
 </body>
 </html>
