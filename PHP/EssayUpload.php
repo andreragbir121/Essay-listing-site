@@ -81,7 +81,6 @@ else {
         }
     }
 
-    // ESSAY TITLE NEED REGEX CHANGE
     if (empty($_POST["essayTitle"])) {
 
       $essayTitleErr = "Essay title is required";
