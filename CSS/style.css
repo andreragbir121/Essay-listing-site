@@ -628,3 +628,43 @@ background-color: whitesmoke;
     bottom: 20%;
     right: 25%;
 }
+
+
+/* Feedback Form */
+
+.feedback-form{
+    background-color: red;
+    border: 3px solid black;
+    border-radius: 5%;
+    padding: 50px;
+    margin: 50px 250px 50px;
+}
+
+.feedback-heading{
+    text-align: center;
+    padding-top: 15px;
+    font-size:35px;
+    
+} 
+
+
+.feedback-instruction
+  {
+    text-align: center;
+  }
+
+  .feedback-input{
+    width: 100%;
+    margin-top: 15px;
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 7px;
+    font-size: 16px;
+    font-weight:bold;
+  } 
+
+
+  .feedback-selection{
+    width: 100%;
+  }
+

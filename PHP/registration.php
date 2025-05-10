@@ -247,7 +247,7 @@ if ($uploadOk == 0) {
 // ============================================================================================================================
     $password = password_hash ($password, PASSWORD_DEFAULT);
 
-    $qry = "INSERT INTO user (pfp, fullName, username, birthDate, parentName, parentEmail, password, schoolName, classLevel) VALUES ('$pfp', '$fullName', '$username', '$birthDate', '$parentName', '$parentEmail', '$password', '$schoolName', '$classLevel')";
+    $qry = "INSERT INTO student (pfp, fullName, username, birthDate, parentName, parentEmail, password, schoolName, classLevel) VALUES ('$pfp', '$fullName', '$username', '$birthDate', '$parentName', '$parentEmail', '$password', '$schoolName', '$classLevel')";
 
     $result = null;
 

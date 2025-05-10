@@ -83,5 +83,63 @@ mysqli_close($conn);
             Tapas. (2022, October 26). Best 20 Short Essay Writing Examples - English Luv. English Luv. <br>
             <a href="https://englishluv.com/short-essay-writing/">https://englishluv.com/short-essay-writing/</a></p>
 
+
+            <br><br><br>
+
+ <div class="feedback-form">
+        <h2 class="feedback-heading">Sign Up</h2>
+        <h4 class="feedback-instruction">It's simple and easy</h4>
+
+        <form class = "feedback-info" method = "POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" onsubmit="return validate()">
+
+        <!-- instructorID, username, fullName, school, which is the same drop down from the student reg form. and finally their, grade and the comment from them
+ -->
+
+          <input  class="feedback-input" id="username" name="username" type="text" placeholder="username" value="<?php /*echo $username;*/ ?>"/><br>
+          <!-- <span id="usernameErr" class="error"><?php echo $usernameErr; ?></span> -->
+
+
+          <input class="feedback-input" id="fullName" name="fullName" type="text" placeholder="Full Name" value="<?php /*echo $fullName; */ ?>"/><br>
+          <!-- <span id="fullNameErr" class="error"><?php echo $fullNameErr; ?></span> -->
+
+
+          
+          <input class="feedback-input" id="email" name="email" type="email" placeholder="email" value="<?php /*echo $email;*/ ?>"/><br>
+          <!-- <span id="emailErr" class="error"><?php echo $emailErr; ?></span> -->
+
+          <input class="account-input" id="feedbackDate" name = "feedbackDate" type="text" placeholder ="Feedback date" onfocus="(this.type = 'date')"value="<?php /*echo $feedbackDate; */?>"/>
+          <!-- <span id="feedbackDaterr" class="error"><?php echo $feedbackDateErr; ?></span> -->
+
+
+          <select class="feedback-input feedback-selection" name="schoolName" id="schoolName" title="schoolName" value="<?php /*echo $schoolName; */?>"/><br>
+            <option value="" disabled selected>School</option>
+              <option value="Penal_Secondary_School">Penal Secondary School</option>
+              <option value="Shiva_Boys_Hindu_College">Shiva Boys Hindu College</option>
+              <option value="Iere_High_School">Iere High School</option>
+              <option value="Debe_High_School">Debe High School</option>
+          </select>
+          <!-- <span id="schoolNameErr" class="error"><?php echo $schoolNameErr; ?></span> -->
+
+            <select class="feedback-input" id="grade" name="grade">
+                        <option value="">Essay Grade</option>
+                        <option value="A">A (Excellent)</option>
+                        <option value="B">B (Good)</option>
+                        <option value="C">C (Satisfactory)</option>
+                        <option value="D">D (Needs Improvement)</option>
+                        <option value="F">F (Fail)</option>
+            </select>
+          
+
+            
+          <textarea class="feedback-input" id = "comment" name="fullEssay" rows="20" cols="255" placeholder="Please enter the complete essay here" value="<?php/* echo $fullEssay; */?>"/></textarea><br>
+          <!-- <span id="fullEssayErr" class="error"><?php echo $fullEssayErr; ?></span> -->
+
+
+          <input type="submit" name="submit" class="submit-btn">
+        </form>
+
+      </div>
+
+</div>
 </body>
-</html> content
+</html>

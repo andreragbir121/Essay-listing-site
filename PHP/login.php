@@ -65,7 +65,7 @@ if (empty($_POST["password"])) {
   }
 		
 			
-		$query = "select * from user where username = '$username'";
+		$query = "select * from student where username = '$username'";
 		$result = null; 
 
 		try{
