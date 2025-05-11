@@ -39,15 +39,29 @@ require_once "dbase_connect.php";
 // ===================================================================================================================================
   // Data Validation Part: 
 
-$username = $studentName = $essayTitle = $essayRating = $essayFirstParagraph = $schoolName = $classLevel = $essayDate = $essayGrade = $fullEssay = "";
-$usernameErr = $studentNameErr = $essayTitleErr = $essayRatingErr = $essayFirstParagraphErr = $schoolNameErr = $classLevelErr = $essayDateErr = $essayGradeErr = $fullEssayErr = "";
+$essayID = $username = $studentName = $essayTitle = $essayRating = $essayFirstParagraph = $schoolName = $classLevel = $essayDate = $fullEssay = "";
+$essayIDErr = $usernameErr = $studentNameErr = $essayTitleErr = $essayRatingErr = $essayFirstParagraphErr = $schoolNameErr = $classLevelErr = $essayDateErr = $fullEssayErr = "";
 
 $valid = true;
 
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["submit"])) {
 
+             
+  if (empty($_POST["essayID"])) {
 
+    $essayIDErr = "An essay ID is required for identifying your essay";
+    $valid = false;
+}
+else {
+    $essayID = $_POST["essayID"];
+    $essayID = test_input($essayID);
+
+    if (!preg_match("/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/", $essayID)) {
+        $essayIDErr = "Essay ID must contain a minimum of 1 letter and 1 number (NO SPECIAL CHARACTERS)";
+        $valid = false;
+    }
+}
         
   if (empty($_POST["username"])) {
 
@@ -63,7 +77,6 @@ else {
         $valid = false;
     }
 }
-
 
 
       if (empty($_POST["studentName"])) {
@@ -230,7 +243,7 @@ else {
     // $fullName = $_POST["fullName"];
     // $email = $_POST["email"];
     // $username = $_POST["username"];
-    // $birthDate = $_POST["birthDate"];
+    $essayDate = $_POST["essayDate"];
     // $parentName = $_POST["parentName"];
     // $parentEmail = $_POST ["parentEmail"];
     // $password = $_POST ["password"];
@@ -242,12 +255,15 @@ else {
 
 // ============================================================================================================================
 
-    $essayListQry = "INSERT INTO essaylist (username, studentName, essayTitle, essayFirstParagraph, essayRating) VALUES ('$username', '$studentName', '$essayTitle', '$essayFirstParagraph', '$essayRating')";
+    $essayListQry = "INSERT INTO essaylist (essayID, username, studentName, essayTitle, essayFirstParagraph, essayRating) VALUES ('$essayID', '$username', '$studentName', '$essayTitle', '$essayFirstParagraph', '$essayRating')";
 
-    $essayDetailsQry = "INSERT INTO essaydetails (username, essayTitle, fullEssay, essayDate, studentName, essayGrade, schoolName, classLevel) VALUES ('$username', '$essayTitle', '$fullEssay', '$essayDate','$studentName', '$essayGrade', '$schoolName', '$classLevel')";
+    $essayDetailsQry = "INSERT INTO essaydetails (essayID, username, essayTitle, fullEssay, essayDate, studentName, schoolName, classLevel) VALUES ('$essayID','$username', '$essayTitle', '$fullEssay', '$essayDate','$studentName', '$schoolName', '$classLevel')";
 
+    // $feedbackqry = "INSERT INTO feedback (essayID
     $result1 = null;
     $result2 = null;
+
+    
     try {
       $result1 = mysqli_query($conn, $essayListQry);
       
@@ -290,7 +306,11 @@ else {
 
           <!-- inserting on image file https://stackoverflow.com/questions/3828554/how-to-allow-input-type-file-to-accept-only-image-files -->
           <input class="pfp" type="file" id = "pfp" name = "pfp">
-          
+
+          <input  class="essay-input" id="essayID" name="essayID" type="text" placeholder="Essay ID" value="<?php echo $essayID;?>"/><br>
+           <span id="essayIDErr" class="error"><?php echo $essayIDErr; ?></span> 
+
+           
           <input  class="essay-input" id="username" name="username" type="text" placeholder="username" value="<?php echo $username;?>"/><br>
           <span id="usernameErr" class="error"><?php echo $usernameErr; ?></span>
 
@@ -300,7 +320,7 @@ else {
           <input  class="essay-input" id="essayTitle" name="essayTitle" type="text" placeholder="Essay Title" value="<?php echo $essayTitle;?>"/><br>
           <span id="essayTitleErr" class="error"><?php echo $essayTitleErr; ?></span> 
 
-          <input  class="essay-input" id="essayRating" name="essayRating" maxlength="1" type="text" placeholder="Essay Rating" value="<?php echo $essayRating;?>"/><br>
+          <input  class="essay-input" id="essayRating" name="essayRating" maxlength="2" type="text" placeholder="Essay Rating" value="<?php echo $essayRating;?>"/><br>
            <span id="essayRatingErr" class="error"><?php echo $essayRatingErr; ?></span> 
 
 
@@ -327,8 +347,6 @@ else {
           <span id="essayDateErr" class="error"><?php echo $essayDateErr; ?></span>
 
 
-          <input  class="essay-input" id="essayGrade" name="essayGrade" maxlength="1" type="text" placeholder="Essay Rating" value="<?php echo $essayGrade;?>"/><br>
-           <span id="essayGradeErr" class="error"><?php echo $essayGradeErr; ?></span> 
            
           <textarea class="essay-input" id = "essayFirstParagraph" name="essayFirstParagraph" rows="6" cols="70" placeholder="Please enter, ONLY the first paragraph of your essay here" value="<?php echo $essayFirstParagraph; ?>"/></textarea><br>
           <span id="essayFirstParagraphErr" class="error"><?php echo $essayFirstParagraphErr; ?></span>

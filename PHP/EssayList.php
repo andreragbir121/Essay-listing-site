@@ -48,9 +48,6 @@
     echo '<br><br>Error occurred: ' . mysqli_error($conn) . '<br><br>'; 
     echo "Please <a href=\"..\index.html\">return to form</a> to resubmit";  
     }
-    
-
-    //process the results and provide feedback 
 
     
     if ($result) {  
@@ -58,16 +55,16 @@
             while ($row = mysqli_fetch_assoc($result)) {                 
                 echo "
                 <div class='essay'>
+                    <p class='essay-info'>essayID: <span>{$row['essayID']}</span></p>
+
                     <p class='essay-info'>Username: <span>{$row['username']}</span></p>
                     <p class='essay-info'>Student name: <span>{$row['studentName']}</span></p>
                     <p class='essay-info'>Essay Title: <span>{$row['essayTitle']}</span></p>
                     <p class='essay-info'>Essay Rating: <span>{$row['essayRating']}</span></p>
                     <p class='essay-info'>First Paragraph: <span>{$row['essayFirstParagraph']}</span></p>
-                    <a href=\"essayDetails.php?username={$row['username']}\" class='view-essay'>View</a>
+                    
+                    <a href=\"essayDetails.php?essayID={$row['essayID']}\" class='view-essay'>View</a>
                 </div>  ";
-
-
-
             }
         } else {
             echo "<br>Query executed. No records found ."; 

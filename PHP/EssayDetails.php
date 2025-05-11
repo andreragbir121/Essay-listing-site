@@ -31,12 +31,11 @@
 
     <?php
  require_once "dbase_connect.php";
-
-// 1. retrieve link data 
-$username = $_GET['username'];
+// $essayID = $_GET['essayID'];
+    if (isset($_GET['essayID'])) $essayID = $_GET['essayID']; 
 
 // 3. preparing and processing the query
-$query = "select * from essaydetails where username = '$username';";
+$query = "select * from essaydetails where essayID = '$essayID'";
 
 $result = null; 
 
@@ -58,9 +57,7 @@ if ($result) {
                         <p class='student-detail'>Student Name: <span>{$row['studentName']}</span></p>
                         <p class='student-detail'>School: <span>{$row['schoolName']}</span></p>
                         <p class='student-detail'>Class: <span>{$row['classLevel']}</span></p>
-                        <p class='student-detail'>Date: <span>{$row['essayDate']}</span></p>
-                        <p class='student-detail'>Grade: <span>{$row['essayGrade']}</span></p>
-
+                        <p class='student-detail'>Date: <span>{$row['essayDate']}</span></p>                        
                     </div>
                 </div>
                 
@@ -76,6 +73,110 @@ if ($result) {
 } else {
     echo "<div class='error'>Error retrieving essay: ".mysqli_error($conn)."</div>";
 }
+
+
+// data validation for feedback form
+
+
+    //   if (isset($_POST['instructorID'])) $instructorID = $_POST['instructorID']; 
+    //   if (isset($_POST['instructorName'])) $instructorName = $_POST['instructorName'];  
+    //   if (isset($_POST['grade'])) $grade = $_POST['grade']; 
+    //   if (isset($_POST['comment'])) $comment = $_POST['comment'];  
+
+$instructorID = $instructorName = $grade = $comment = "";
+$instructorIDErr = $instructorNameErr = $gradeErr = $commentErr = "";
+
+$valid = true;
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["submit"])) {
+    if (isset($_POST['essayID'])) $essayID = $_POST['essayID']; 
+
+  if (empty($_POST["instructorID"])) {
+
+    $instructorIDErr = "Instructor ID is needed";
+    $valid = false;
+}
+else {
+      if (isset($_POST['instructorID'])) $instructorID = $_POST['instructorID']; 
+    $instructorID = test_input($instructorID);
+
+    if (!preg_match("/^\d+$/", $instructorID)) {
+        $instructorIDErr = "Instructor ID must be a valid number";
+        $valid = false;
+    }
+}
+ 
+                   
+  if (empty($_POST["instructorName"])) {
+
+    $instructorNameErr = "Instructor ID is needed";
+    $valid = false;
+}
+else {
+      if (isset($_POST['instructorID'])) $instructorID = $_POST['instructorID']; 
+    $instructorName = test_input($instructorName);
+
+    if (!preg_match("/[a-zA-Z]+[ a-zA-Z]*/", $instructorName)) {
+        $instructorNameErr = "instructor name must be only letters and spacing";
+        $valid = false;
+    }
+}
+
+if (empty($_POST["grade"])) {
+    $gradeErr = "Grade is required ";
+    $valid = false;
+} else {
+    if (isset($_POST['grade'])) $grade = $_POST['grade']; 
+    $grade = test_input($_POST["grade"]);
+}
+
+                   
+  if (empty($_POST["comment"])) {
+
+    $commentErr = "comment is needed for student feedback";
+    $valid = false;
+}
+else {
+      if (isset($_POST['comment'])) $comment = $_POST['comment'];  
+    $comment = test_input($comment);
+
+    if (!preg_match("/^.{5,}$/", $comment)) {
+        $commentErr = "Comment must be at least 5 characters minimum";
+        $valid = false;
+    }
+}
+ 
+    $query = "update essaydetails set instructorID = '$instructorID', instructorName = '$instructorName', grade = '$grade', comment = '$comment' WHERE essayID = '$essayID'";
+    //execute the query  
+      $result = null;  
+           
+          try {  
+              $result = mysqli_query($conn, $query); 
+          } catch (Exception $e){ 
+              echo '<br><br>Error occurred: ' . mysqli_error($conn) . '<br><br>'; 
+              echo "Please <a href=\"index.html\">return to form</a> to resubmit"; 
+          } 
+
+      if ($result) {
+      $rows_updated = mysqli_affected_rows($conn); 
+          if ($rows_updated > 0) {
+            echo "$rows_updated rows were updated as requested. <br><br>";
+          } else {
+            echo "Sorry no rows were found for user ID $essayID. <br><br>"; 
+            } 
+            } 
+
+}
+
+  function test_input($data)
+  {
+      $data = trim($data);
+      $data = stripslashes($data);
+      $data = htmlspecialchars($data);
+      return $data;
+  }
+
 mysqli_close($conn);
 ?>
 <br><br><br>
@@ -91,34 +192,13 @@ mysqli_close($conn);
         <h4 class="feedback-instruction">It's simple and easy</h4>
 
         <form class = "feedback-info" method = "POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" onsubmit="return validate()">
+    <input type="hidden" name="essayID" value="<?php echo htmlspecialchars($essayID); ?>">
 
-        <!-- instructorID, username, fullName, school, which is the same drop down from the student reg form. and finally their, grade and the comment from them
- -->
+        <input  class="feedback-input" id="instructorID" name="instructorID" type="num" placeholder="instructorID" value="<?php echo $instructorID; ?>"/><br>
+          <span id="instructorIDErr" class="error"><?php echo $instructorIDErr; ?></span>
 
-          <input  class="feedback-input" id="username" name="username" type="text" placeholder="username" value="<?php /*echo $username;*/ ?>"/><br>
-          <!-- <span id="usernameErr" class="error"><?php echo $usernameErr; ?></span> -->
-
-
-          <input class="feedback-input" id="fullName" name="fullName" type="text" placeholder="Full Name" value="<?php /*echo $fullName; */ ?>"/><br>
-          <!-- <span id="fullNameErr" class="error"><?php echo $fullNameErr; ?></span> -->
-
-
-          
-          <input class="feedback-input" id="email" name="email" type="email" placeholder="email" value="<?php /*echo $email;*/ ?>"/><br>
-          <!-- <span id="emailErr" class="error"><?php echo $emailErr; ?></span> -->
-
-          <input class="account-input" id="feedbackDate" name = "feedbackDate" type="text" placeholder ="Feedback date" onfocus="(this.type = 'date')"value="<?php /*echo $feedbackDate; */?>"/>
-          <!-- <span id="feedbackDaterr" class="error"><?php echo $feedbackDateErr; ?></span> -->
-
-
-          <select class="feedback-input feedback-selection" name="schoolName" id="schoolName" title="schoolName" value="<?php /*echo $schoolName; */?>"/><br>
-            <option value="" disabled selected>School</option>
-              <option value="Penal_Secondary_School">Penal Secondary School</option>
-              <option value="Shiva_Boys_Hindu_College">Shiva Boys Hindu College</option>
-              <option value="Iere_High_School">Iere High School</option>
-              <option value="Debe_High_School">Debe High School</option>
-          </select>
-          <!-- <span id="schoolNameErr" class="error"><?php echo $schoolNameErr; ?></span> -->
+          <input class="feedback-input" id="instructorName" name="instructorName" type="text" placeholder="Full Name" value="<?php echo $instructorName;  ?>"/><br>
+          <span id="instructorNameErr" class="error"><?php echo $instructorNameErr; ?></span>
 
             <select class="feedback-input" id="grade" name="grade">
                         <option value="">Essay Grade</option>
@@ -128,11 +208,11 @@ mysqli_close($conn);
                         <option value="D">D (Needs Improvement)</option>
                         <option value="F">F (Fail)</option>
             </select>
-          
+            <span id="gradeErr" class="error"><?php echo $gradeErr; ?></span>
 
             
-          <textarea class="feedback-input" id = "comment" name="fullEssay" rows="20" cols="255" placeholder="Please enter the complete essay here" value="<?php/* echo $fullEssay; */?>"/></textarea><br>
-          <!-- <span id="fullEssayErr" class="error"><?php echo $fullEssayErr; ?></span> -->
+          <textarea class="feedback-input" id = "comment" name="comment" rows="3" cols="255" placeholder="instructor comment to the student" value="<?php echo $comment; ?>"/></textarea><br>
+          <span id="commentErr" class="error"><?php echo $commentErr; ?></span>
 
 
           <input type="submit" name="submit" class="submit-btn">
@@ -143,3 +223,7 @@ mysqli_close($conn);
 </div>
 </body>
 </html>
+
+
+<!-- instructorID	instructorName	Grade	comment	 -->
+

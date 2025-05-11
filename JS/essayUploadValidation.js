@@ -3,7 +3,21 @@ function validate(){
 	clearErrors();
 	
 	let valid = true;
-		
+	// essayID
+	let essayID_element = document.getElementById('essayID');
+	let essayID_regex = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;		//regex retrieved from stackoverflow https://stackoverflow.com/questions/7684815/regex-pattern-to-match-at-least-1-number-and-1-character-in-a-string
+
+if(!essayID_regex.test(essayID_element.value)){
+	essayID_element.style.backgroundColor = "#ff5555";
+
+	var essayIDErr = document.getElementById('essayIDErr');
+	essayIDErr.innerHTML = "Please enter a 3 digit unique value for your essay ID";		
+	valid = false;
+}
+
+
+
+
 	// username
 let username_element = document.getElementById('username');
 let username_regex = /^[a-zA-Z0-9_\-!@#$%^&*()+=.,;:]+$/;
