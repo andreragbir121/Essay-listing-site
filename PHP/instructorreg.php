@@ -1,7 +1,3 @@
-<?php
-session_start();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,8 +39,8 @@ require_once "dbase_connect.php";
 // ===================================================================================================================================
   // Data Validation Part: 
 
-$fullName = $username = $birthDate = $parentName = $parentEmail = $schoolName = $classLevel = $passwordConfirm = "";
-$fullNameErr = $usernameErr = $birthDateErr = $parentNameErr = $parentEmailErr = $schoolNameErr = $classLevelErr = $passwordErr = $passwordConfirmErr = "";
+$fullName = $username = $email = $schoolName = $password = "";
+$fullNameErr = $usernameErr = $emailErr = $schoolNameErr = $passwordErr;
 
 $valid = true;
 
@@ -100,32 +96,32 @@ else {
 // }
 
 
-if (empty($_POST["parentName"])) {
+// if (empty($_POST["parentName"])) {
 
-  $parentNameErr = "Parent full name is required";
+//   $parentNameErr = "Parent full name is required";
+//   $valid = false;
+// }
+// else {
+//   $parentName = $_POST["parentName"];
+//   $parentName = test_input($parentName); 
+
+//   if (!preg_match("/[a-zA-Z]+[ a-zA-Z]*/", $parentName)) {
+//       $parentNameErr = "Name may only contain letters or ' ! and -";
+//       $valid = false;
+//   }
+// }
+
+if (empty($_POST["email"])) {
+
+  $emailErr = "Parent email is required";
   $valid = false;
 }
 else {
-  $parentName = $_POST["parentName"];
-  $parentName = test_input($parentName); 
+  $email = $_POST["email"];
+  $email = test_input($email);
 
-  if (!preg_match("/[a-zA-Z]+[ a-zA-Z]*/", $parentName)) {
-      $parentNameErr = "Name may only contain letters or ' ! and -";
-      $valid = false;
-  }
-}
-
-if (empty($_POST["parentEmail"])) {
-
-  $parentEmailErr = "Parent email is required";
-  $valid = false;
-}
-else {
-  $parentEmail = $_POST["parentEmail"];
-  $parentEmail = test_input($parentEmail);
-
-  if (!preg_match("/^[a-zA-Z0-9]{3,24}@[ a-zA-Z0-9]{2,40}.[a-zA-Z]{2,4}$/", $parentEmail)) {
-      $parentEmailErr = "email can only contain letters and special char";
+  if (!preg_match("/^[a-zA-Z0-9]{3,24}@[ a-zA-Z0-9]{2,40}.[a-zA-Z]{2,4}$/", $email)) {
+      $emailErr = "email can only contain letters and special char";
       $valid = false;
   }
 }
@@ -170,18 +166,18 @@ else {
   }
 }
 
-if (empty($_POST["passwordConfirm"])) {
-    $passwordConfirmErr = "Please confirm your password";
-    $valid = false;
-} else {
-    $passwordConfirm = $_POST["passwordConfirm"];
-    $passwordConfirm = test_input($passwordConfirm);
+// if (empty($_POST["passwordConfirm"])) {
+//     $passwordConfirmErr = "Please confirm your password";
+//     $valid = false;
+// } else {
+//     $passwordConfirm = $_POST["passwordConfirm"];
+//     $passwordConfirm = test_input($passwordConfirm);
     
-    if ($password !== $passwordConfirm) {
-        $passwordConfirmErr = "Passwords do not match";
-        $valid = false;
-    }
-}
+//     if ($password !== $passwordConfirm) {
+//         $passwordConfirmErr = "Passwords do not match";
+//         $valid = false;
+//     }
+// }
 // if(!($password===$passwordConfirm))die("The passwords do not Match.  Please return to registration page");
 
 // Image Uploading: 
@@ -237,7 +233,7 @@ if ($uploadOk == 0) {
     // $fullName = $_POST["fullName"];
     // // $email = $_POST["email"];
     // $username = $_POST["username"];
-    $birthDate = $_POST["birthDate"];
+    // $birthDate = $_POST["birthDate"];
     // $parentName = $_POST["parentName"];
     // $parentEmail = $_POST ["parentEmail"];
     // $password = $_POST ["password"];
@@ -251,7 +247,7 @@ if ($uploadOk == 0) {
 // ============================================================================================================================
     $password = password_hash ($password, PASSWORD_DEFAULT);
 
-    $qry = "INSERT INTO student (pfp, fullName, username, birthDate, parentName, parentEmail, password, schoolName, classLevel) VALUES ('$pfp', '$fullName', '$username', '$birthDate', '$parentName', '$parentEmail', '$password', '$schoolName', '$classLevel')";
+    $qry = "INSERT INTO instructor (pfp, fullName, username, email, schoolName, password) VALUES ('$pfp', '$fullName', '$username', '$email', '$schoolName', '$password')";
 
     $result = null;
 
@@ -304,17 +300,10 @@ if ($uploadOk == 0) {
           <input  class="account-input" id="username" name="username" type="text" placeholder="username" value="<?php echo $username; ?>"/><br>
           <span id="usernameErr" class="error"><?php echo $usernameErr; ?></span>
 
-          
-          <input class="account-input" id="birthDate" name = "birthDate" type="text" placeholder ="Date of Birth" onfocus="(this.type = 'date')"value="<?php echo $birthDate; ?>"/>
-          <span id="birthDateErr" class="error"><?php echo $birthDateErr; ?></span>
 
 
-          <input class="account-input" id="parentName" name="parentName" type="text" placeholder="Parent Full Name" value="<?php echo $parentName; ?>"/><br>
-          <span id="parentNameErr" class="error"><?php echo $parentNameErr; ?></span>
-
-
-          <input class="account-input" id="parentEmail" name="parentEmail" type="email" placeholder="Parent Email" value="<?php echo $parentEmail; ?>"/><br>
-          <span id="parentEmailErr" class="error"><?php echo $parentEmailErr; ?></span>
+          <input class="account-input" id="email" name="email" type="email" placeholder="Parent Email" value="<?php echo $email; ?>"/><br>
+          <span id="emailErr" class="error"><?php echo $emailErr; ?></span>
           
           
           <select class="account-input account-selection" name="schoolName" id="schoolName" title="schoolName" value="<?php echo $schoolName; ?>"/><br>
@@ -326,25 +315,10 @@ if ($uploadOk == 0) {
           </select>
           <span id="schoolNameErr" class="error"><?php echo $schoolNameErr; ?></span>
 
-          <select  class="account-input account-selection" title="classLevel" name="classLevel" id="classLevel" value="<?php echo $classLevel; ?>"/><br>
-            <option value="" disabled selected>Class Level</option>
-              <option value="form1">Form 1</option>
-              <option value="form2">Form 2</option>
-              <option value="form3">Form 3</option>
-              <option value="form4">Form 4</option>
-              <option value="form5">Form 5</option>
-          </select>
-          <span id="classLevelErr" class="error"><?php echo $classLevelErr; ?></span>
 
         
           <input class="account-input" id="password" name="password" type="password" placeholder="password"value="<?php echo $password; ?>"/><br>
           <span id="passwordErr" class="error"><?php echo $passwordErr; ?></span>
-
-          <input class="account-input" id="passwordConfirm" name="passwordConfirm" type="password" placeholder="Confirm Password"value="<?php echo $passwordConfirm; ?>"/><br>
-          <span id="passwordErr" class="error"><?php echo $passwordConfirmErr; ?></span>
-
-
-          <p class="terms-and-conditions" >By registering I agree that I have read the <a href="../DOCS/terms-and-conditions-template.pdf">terms and condition</a></p>
 
 
           <input type="submit" name="submit" class="submit-btn">
@@ -353,7 +327,7 @@ if ($uploadOk == 0) {
         <p class="existing-account">Already have an account? <br> <a href="../index.php">Login here</a></p>
 
       </div>
-      <script type="text/javascript" src="../JS/RegValidations.js"></script>
+      <!-- <script type="text/javascript" src="../JS/RegValidations.js"></script> -->
 
 </body>
 </html>

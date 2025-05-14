@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,8 +36,10 @@
     <?php
  require_once "dbase_connect.php";
 // $essayID = $_GET['essayID'];
-    if (isset($_GET['essayID'])) $essayID = $_GET['essayID']; 
-
+$essayID = 'essayID1';
+if (isset($_GET['essayID'])) {
+    $essayID = $_GET['essayID'];
+}
 // 3. preparing and processing the query
 $query = "select * from essaydetails where essayID = '$essayID'";
 
@@ -48,7 +54,6 @@ try {
 if ($result) {
     if (mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
-                        
             echo "
             <div class='essay-details-container'>
                 <div class='student-info'>
@@ -65,7 +70,16 @@ if ($result) {
                     <h1 class='essay-title'>{$row['essayTitle']}</h1>
                     <p class='student-detail'>{$row['fullEssay']}</p>
                 </div>
-            </div>";
+            </div>
+             <div class='instructor-info'>
+                    <div class='instructor-details'>
+                        <p class='instructor-detail'>Instructor ID: <span>{$row['instructorID']}</span></p>
+                        <p class='instructor-detail'>Instructor Name: <span>{$row['instructorName']}</span></p>
+                        <p class='instructor-detail'>Grade: <span>{$row['grade']}</span></p>
+                        <p class='instructor-detail'>Comment: <span>{$row['comment']}</span></p>
+                    </div>
+                                    </div>
+";
         }
     } else {
         echo "<div class='no-results'>No essays found for this user.</div>";
@@ -114,7 +128,7 @@ else {
     $valid = false;
 }
 else {
-      if (isset($_POST['instructorID'])) $instructorID = $_POST['instructorID']; 
+      if (isset($_POST['instructorName'])) $instructorName = $_POST['instructorName']; 
     $instructorName = test_input($instructorName);
 
     if (!preg_match("/[a-zA-Z]+[ a-zA-Z]*/", $instructorName)) {
@@ -192,7 +206,7 @@ mysqli_close($conn);
         <h4 class="feedback-instruction">It's simple and easy</h4>
 
         <form class = "feedback-info" method = "POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" onsubmit="return validate()">
-    <input type="hidden" name="essayID" value="<?php echo htmlspecialchars($essayID); ?>">
+        <input type="hidden" name="essayID" value="<?php echo htmlspecialchars($essayID); ?>">
 
         <input  class="feedback-input" id="instructorID" name="instructorID" type="num" placeholder="instructorID" value="<?php echo $instructorID; ?>"/><br>
           <span id="instructorIDErr" class="error"><?php echo $instructorIDErr; ?></span>
@@ -202,11 +216,11 @@ mysqli_close($conn);
 
             <select class="feedback-input" id="grade" name="grade">
                         <option value="">Essay Grade</option>
-                        <option value="A">A (Excellent)</option>
-                        <option value="B">B (Good)</option>
-                        <option value="C">C (Satisfactory)</option>
-                        <option value="D">D (Needs Improvement)</option>
-                        <option value="F">F (Fail)</option>
+                        <option value="A (Excellent)">A (Excellent)</option>
+                        <option value="B (Good)">B (Good)</option>
+                        <option value="C (Satisfactory)">C (Satisfactory)</option>
+                        <option value="D (Needs Improvement)">D (Needs Improvement)</option>
+                        <option value="F (Fail)">F (Fail)</option>
             </select>
             <span id="gradeErr" class="error"><?php echo $gradeErr; ?></span>
 
@@ -223,7 +237,4 @@ mysqli_close($conn);
 </div>
 </body>
 </html>
-
-
-<!-- instructorID	instructorName	Grade	comment	 -->
 

@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -255,9 +259,9 @@ else {
 
 // ============================================================================================================================
 
-    $essayListQry = "INSERT INTO essaylist (essayID, username, studentName, essayTitle, essayFirstParagraph, essayRating) VALUES ('$essayID', '$username', '$studentName', '$essayTitle', '$essayFirstParagraph', '$essayRating')";
+    $essayListQry = "insert into essaylist (essayID, username, studentName, essayTitle, essayFirstParagraph, essayRating) values ('$essayID', '$username', '$studentName', '$essayTitle', '$essayFirstParagraph', '$essayRating')";
 
-    $essayDetailsQry = "INSERT INTO essaydetails (essayID, username, essayTitle, fullEssay, essayDate, studentName, schoolName, classLevel) VALUES ('$essayID','$username', '$essayTitle', '$fullEssay', '$essayDate','$studentName', '$schoolName', '$classLevel')";
+    $essayDetailsQry = "insert into essaydetails (essayID, username, essayTitle, fullEssay, essayDate, studentName, schoolName, classLevel) values ('$essayID','$username', '$essayTitle', '$fullEssay', '$essayDate','$studentName', '$schoolName', '$classLevel')";
 
     // $feedbackqry = "INSERT INTO feedback (essayID
     $result1 = null;
@@ -335,11 +339,11 @@ else {
 
           <select  class="essay-input account-selection" title="classLevel" name="classLevel" id="classLevel" value="<?php echo $classLevel; ?>"/><br>
             <option value="" disabled selected>Class Level</option>
-              <option value="form1">Form 1</option>
-              <option value="form2">Form 2</option>
-              <option value="form3">Form 3</option>
-              <option value="form4">Form 4</option>
-              <option value="form5">Form 5</option>
+              <option value="form 1">Form 1</option>
+              <option value="form 2">Form 2</option>
+              <option value="form 3">Form 3</option>
+              <option value="form 4">Form 4</option>
+              <option value="form 5">Form 5</option>
           </select>
           <span id="classLevelErr" class="error"><?php echo $classLevelErr; ?></span>
 

@@ -1,5 +1,18 @@
 <?php 
-	session_start();
+session_start();
+    require_once 'PHP/dbase_connect.php';
+
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: Index.php");;
+}
+
+$message = "";
+if (isset($_SESSION['username'])) {
+    $message = "<div>
+    Welcome back, ".htmlspecialchars($_SESSION['fullName'])." 
+        </div>";
+}
 ?>
 
 <!DOCTYPE html>
@@ -26,28 +39,39 @@
             <li class="nav-option"><a class ="nav-links" href="PHP/EssayList.php">Essays</a></li>
             <li class="nav-option"><a class ="nav-links" href="HTML/Contact.html">Contact</a></li>
         </ul>
-    
+        
         <div class="profile-dropdown">
-            <div class="profile-icon"><img src="IMGS/Profile-pictures/avatar1.png" alt="profile photo of users choice"></div>
+            <div class="profile-icon">
+                <img src="<?php echo !empty($_SESSION['pfp']) ? $_SESSION['pfp'] : 'IMGS/Profile-pictures/avatar1.png'; ?>" alt="Profile">
+            </div>
             <div class="profile-selection">
                 <a class="profile-options">Profile</a>
                 <a class="profile-options" href="">Preference</a>
-                <a class="profile-options" href="">Logout</a>
+                <?php if (isset($_SESSION['username'])) { 
+                    echo '<a class="profile-options" href="?logout=1">Logout</a>';
+                } else { 
+                    echo '<a class="profile-options" href="#login">Login</a>';
+                } ?>
+                </div>
             </div>
-        </div>
-        </nav>
-
+    </nav>
         <?php
-        require_once 'PHP/dbase_connect.php';
 
         // Login validations: 
 		$username = $password = "";
 		$usernameErr = $passwordErr = "";
-
+        $userType = 'student';
 		$valid = true;
 
 		if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["submit"])) {
 
+        if (isset($_POST['userType'])) {
+        if ($_POST['userType'] == 'student') {
+            $userType = 'student';
+        } else {
+            $userType = 'instructor';
+        }
+    }
 
 		if (empty($_POST["username"])) {
 			$usernameErr = "username is required";
@@ -73,23 +97,24 @@
 	    $password = $_POST["password"];
 	    $password = test_input($password);
   
-	// Regex for password taken from : https://uibakery.io/regex-library/password 
-	    if (!preg_match("/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/", $password)) {
-		    $passwordErr = "Password must be at least 8 characters long and include an uppercase letter, lowercase letter, number, and symbol";
-		    $valid = false;
-	}
   }
 
-        // working login form:
-        //retrieve login form data
 		// $username = $_POST['username'];
 		// $password = $_POST['password'];
 			
-		$query = "select * from user where username = '$username'";
+        if ($valid) {
+        if ($userType == 'student') {
+            $query = "select * from student where username = '$username'";
+        } else {
+            $query = "select *from instructor where username = '$username'";
+        }
+    
 		$result = null; 
 
 		try{
+            if (!empty($query)){
 			$result = mysqli_query($conn, $query);
+            }
 
         }catch(Exception $e){
 			echo "there was an error with you login. Please try again";
@@ -101,27 +126,33 @@
                 $login_success = password_verify($password, $row['password']);
 
 				if ($login_success){
-
-                    $_SESSION['pfp'] = $row['pfp'];
-                    $_SESSION ['fullName'] = $row['fullName'];
-					$_SESSION['username'] = $row['username'];
-					$_SESSION['birthDate'] = $row['birthDate'];
-					$_SESSION['parentName'] = $row['parentName'];
-					$_SESSION['parentEmail'] = $row['parentEmail'];
-					$_SESSION['schoolName'] = $row['schoolName'];
-                    $_SESSION['classLevel'] = $row['classLevel'];
-
-
-					echo "Hello $row[fullName]. you have successfully logged in";
-
-					echo '<br /> <br /><p><a href ="index.php" >Return to home page</a></p>';
-				}
-				else echo "Login credentials invalid, Please try again1.";
-			}
-			else echo "Login credentials invalid, Please try again.";
-		}
-
+                    if ($login_success){
+                        $_SESSION['username'] = $row['username'];
+                        $_SESSION['fullName'] = $row['fullName'];
+                        
+                        if ($userType == 'student') {
+                            $_SESSION['pfp'] = $row['pfp'];
+                            $_SESSION['birthDate'] = $row['birthDate'];
+                            $_SESSION['parentName'] = $row['parentName'];
+                            $_SESSION['parentEmail'] = $row['parentEmail'];
+                            $_SESSION['schoolName'] = $row['schoolName'];
+                            $_SESSION['classLevel'] = $row['classLevel'];
+                        
+                        } else {
+                            $_SESSION['pfp'] = $row['pfp'];
+                            $_SESSION['instructorID'] = $row['instructorID'];
+                            $_SESSION['email'] = $row['email'];
+                            $_SESSION['schoolName'] = $row['schoolName'];
+                        }
+					header("Location: Index.php"); //issues logging in so header was solution, user need to click login twice - https://stackoverflow.com/questions/39291500/redirecting-user-after-login-with-headerlocation-is-not-working
+		        }
+        else echo "Invalid Credentials. Please try again";
     }
+    else echo "Invalid Credentials. Please Try again";
+}
+    }
+}
+}
     
   function test_input($data)
   {
@@ -129,18 +160,18 @@
       $data = stripslashes($data);
       $data = htmlspecialchars($data);
       return $data;
-  }
-		mysqli_close($conn);
-		
+  }		
+        if (empty($message)) {
 	?>
-
 
 <form  class="login-form" method = "post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return validate()">
 
-<div class = "user-type">
-<button class="user" type="button">Student</button>
-<button class="user" type="button">Instructor</button>
-</div>
+<!-- Code used to check if radio is seleccted: https://stackoverflow.com/questions/4554758/how-to-read-if-a-checkbox-is-checked-in-php -->
+ <div class="userType">
+        Student <input type="radio" name="userType" value="student" <?php echo ($userType == 'student') ? 'checked' : ''; ?>>
+        Instructor <input type="radio" name="userType" value="instructor" <?php echo ($userType == 'instructor') ? 'checked' : ''; ?>>
+
+    </div>
 
 <div class="credentials">
 <input  class="login-info" id="username" name="username" type="text" placeholder="username" value="<?php echo $username; ?>"/><br>
@@ -164,12 +195,19 @@
 
 </form>
 
+ <?php
+    } else {
+        echo $message;
+    }
+    	mysqli_close($conn);
 
+    ?>
 
 <img class = "logo" src="IMGS/LOGO/Logo.png" alt="Ministry Of education Logo">
 
 
 <p class="short-intro">BrightMinds<br><span>The bright minds of our next generation</span></p>
+
 <!-- Essays taken from essay page and uses same CSS as the essay page -->
 <h2 class="featured-list">Featured Essays</h2>   
 

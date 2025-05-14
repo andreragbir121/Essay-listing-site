@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,14 +22,20 @@
             <li class="nav-option"><a class="nav-links" href="../HTML/Contact.html">Contact</a></li>
         </ul>
     
-        <div class="profile-dropdown">
-            <div class="profile-icon"><img src="../IMGS/Profile-pictures/avatar1.png" alt="profile photo"></div>
+       <div class="profile-dropdown">
+            <div class="profile-icon">
+                <img src="<?php echo !empty($_SESSION['pfp']) ? $_SESSION['pfp'] : 'IMGS/Profile-pictures/avatar1.png'; ?>" alt="Profile">
+            </div>
             <div class="profile-selection">
                 <a class="profile-options">Profile</a>
                 <a class="profile-options" href="">Preference</a>
-                <a class="profile-options" href="">Logout</a>
+                <?php if (isset($_SESSION['username'])) { 
+                    echo '<a class="profile-options" href="?logout=1">Logout</a>';
+                } else { 
+                    echo '<a class="profile-options" href="#login">Login</a>';
+                } ?>
+                </div>
             </div>
-        </div>
     </nav>
     
     <h1 class="Essay-heading">Essay Listing of Students</h1>
