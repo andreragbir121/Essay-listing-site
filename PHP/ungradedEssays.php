@@ -9,7 +9,6 @@ if (isset($_GET['logout'])) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,10 +24,10 @@ if (isset($_GET['logout'])) {
         <ul class="Navigation">
            <li><img class="navbar-logo" src="../IMGS/LOGO/Navbar-Logo.png" alt=""></li> 
             <li class="nav-option"><a class="nav-links" href="../Index.php">Home</a></li>
-            <li class="nav-option"><a class="nav-links" href="../php/About.php">About</a></li>
+            <li class="nav-option"><a class="nav-links" href="About.php">About</a></li>
             <li class="nav-option"><a class="nav-links" href="EssayList.php">Essays</a></li>
-            <li class="nav-option"><a class="nav-links" href="../php/Contact.php">Contact</a></li>
-        <?php if (isset($_SESSION['userType']) && $_SESSION['userType'] === 'instructor') {
+            <li class="nav-option"><a class="nav-links" href="Contact.php">Contact</a></li>
+            <?php if (isset($_SESSION['userType']) && $_SESSION['userType'] === 'instructor') {
             echo '<li class="nav-option"><a class="nav-links" href="UngradedEssays.php">Ungraded Essays</a></li>';
         }
         ?>
@@ -42,12 +41,12 @@ if (isset($_GET['logout'])) {
                 }
                 
 ?>           
-            </div>
+     
             <div class="profile-selection">
                 <a class="profile-options">Profile</a>
                 <a class="profile-options" href="">Preference</a>
                 <?php if (isset($_SESSION['username'])) { 
-                    echo '<a class="profile-options" href="?logout=1">Logout</a>';          //Logout option code sampled from: https://stackoverflow.com/questions/12209438/logout-button-php
+                    echo '<a class="profile-options" href="?logout=1">Logout</a>';
                 } else { 
                     echo '<a class="profile-options" href="#login">Login</a>';
                 } ?>
@@ -60,15 +59,8 @@ if (isset($_GET['logout'])) {
 
     <div class="top-essays">
     <?php
-if (isset($_SESSION['userType'])) {
-        if ($_SESSION['userType'] === 'instructor') {
-            $query = 'select * from essaylist order by essayRating desc';
-        } else{
-            $query = 'select * from essaylist where isPublic = 1 order by essayRating desc';
-        } 
-    }else {
-            $query = 'select * from essaylist where isPublic = 1 order by essayRating desc';
-        }
+
+    $query = "select * from essaylist where grade = 'UNGRADED'";
     
     $result = null; 
     try { 
@@ -84,6 +76,8 @@ if (isset($_SESSION['userType'])) {
             while ($row = mysqli_fetch_assoc($result)) {                 
                 echo "
                 <div class='essay'>
+                    <p class='essay-info'>essayID: <span>{$row['essayID']}</span></p>
+
                     <p class='essay-info'>Username: <span>{$row['username']}</span></p>
                     <p class='essay-info'>Student name: <span>{$row['studentName']}</span></p>
                     <p class='essay-info'>Essay Title: <span>{$row['essayTitle']}</span></p>
@@ -103,11 +97,11 @@ if (isset($_SESSION['userType'])) {
     if (isset($_SESSION['userType']) && $_SESSION['userType'] === 'student') {
 
     echo "<div class='essay'>
-     <a class = 'essay-add' href='EssayUpload.php'>
-     <i class='essay-add fa-sharp fa-solid fa-plus'></i>
-     <span>Add Essay</span>
-     </a>
-     </div>";
+    <a class = 'essay-add' href='EssayUpload.php'>
+    <i class='essay-add fa-sharp fa-solid fa-plus'></i>
+    <span>Add Essay</span>
+    </a>
+    </div>";
     }
     mysqli_close($conn);
     ?>

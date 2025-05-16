@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once "dbase_connect.php";
+
 ?>
 
 <!DOCTYPE html>
@@ -22,23 +24,35 @@ session_start();
         <li class="nav-option"><a class ="nav-links" href="About.html">About</a></li>
         <li class="nav-option"><a class ="nav-links" href="../PHP/EssayList.php">Essays</a></li>
         <li class="nav-option"><a class ="nav-links" href="Contact.html">Contact</a></li>
-    </ul>
-
-    <div class="profile-dropdown">
-        <div class="profile-icon"><img src="../IMGS/Profile-pictures/avatar1.png" alt="profile photo of users choice"></div>
-        <div class="profile-selection">
-            <a class="profile-options">Profile</a>
-            <a class="profile-options" href="">Preference</a>
-            <a class="profile-options" href="">Logout</a>
-        </div>
-    </div>
+     <?php if (isset($_SESSION['userType']) && $_SESSION['userType'] === 'instructor') {
+            echo '<li class="nav-option"><a class="nav-links" href="UngradedEssays.php">Ungraded Essays</a></li>';
+        }
+        ?>
+        </ul>
+        <div class="profile-dropdown">
+            <div class="profile-icon">
+                <?php if (!empty($_SESSION['pfp'])) {
+                    echo '<img src="'.($_SESSION['pfp']).'" alt="Profile">';
+                } else {
+                    echo '<img src="../IMGS/Profile-pictures/avatar1.png" alt="Profile">';
+                }
+                
+?>            </div>
+            <div class="profile-selection">
+                <a class="profile-options">Profile</a>
+                <a class="profile-options" href="">Preference</a>
+                <?php if (isset($_SESSION['username'])) { 
+                    echo '<a class="profile-options" href="?logout=1">Logout</a>';          //Logout option code sampled from: https://stackoverflow.com/questions/12209438/logout-button-php
+                } else { 
+                    echo '<a class="profile-options" href="#login">Login</a>';
+                } ?>
+                </div>
+            </div>
     </nav>
 
     
 <?php
 
-//connecting to dbase
-require_once "dbase_connect.php";
 
 // ===================================================================================================================================
   // Data Validation Part: 
@@ -81,23 +95,21 @@ else {
         $valid = false;
     }
 }
-
-
  
-// if (empty($_POST["birthDate"])) {
+if (empty($_POST["birthDate"])) {
 
-//   $birthDateErr = "Birth Date is required";
-//   $valid = false;
-// }
-// else {
-//   $birthDate = $_POST["birthDate"];
-//   $dateOfBirth = test_input($birthDate);
+  $birthDateErr = "Birth Date is required";
+  $valid = false;
+}
+else {
+  $birthDate = $_POST["birthDate"];
+  $dateOfBirth = test_input($birthDate);
 
-//   if (!preg_match("[a-zA-Z]+[ a-zA-Z]*", $birthDate)) {
-//       $birthDateErr = "username may only contain letters, numbers and special characters. No spaces";
-//       $valid = false;
-//   }
-// }
+  if (!preg_match("/^\d{4}-\d{2}-\d{2}$/", $birthDate)) {
+      $birthDateErr = "username may only contain letters, numbers and special characters. No spaces";
+      $valid = false;
+  }
+}
 
 
 if (empty($_POST["parentName"])) {
@@ -227,28 +239,8 @@ if ($uploadOk == 0) {
   }
 }
 
-// ======================================================================================================================================
-
-
-    //Retrieve form data and store in php variables
     $pfp = $_POST && $_FILES["pfp"];
-    // $userType = $_POST["userType"];
-    // $instructorID = $_POST["instructorID"];
-    // $fullName = $_POST["fullName"];
-    // // $email = $_POST["email"];
-    // $username = $_POST["username"];
-    $birthDate = $_POST["birthDate"];
-    // $parentName = $_POST["parentName"];
-    // $parentEmail = $_POST ["parentEmail"];
-    // $password = $_POST ["password"];
-    // $schoolName = $_POST["schoolName"];
-    // $classLevel = $_POST["classLevel"];
-    
-// =============================================================================================================================
 
-
-
-// ============================================================================================================================
     $password = password_hash ($password, PASSWORD_DEFAULT);
 
     $qry = "INSERT INTO student (pfp, fullName, username, birthDate, parentName, parentEmail, password, schoolName, classLevel) VALUES ('$pfp', '$fullName', '$username', '$birthDate', '$parentName', '$parentEmail', '$password', '$schoolName', '$classLevel')";
@@ -260,10 +252,10 @@ if ($uploadOk == 0) {
 
     } catch(Exception $e) {
         echo '<br><br>Error occurred: ' . mysqli_error($conn) . '<br><br>';
-        echo "Please <a href=\"index.html\">return to form</a> to resubmit";
+        echo " Failed to register. Please try again";
     }
 
-    if($result) echo '<br><br>record successfully inserted.<br><br>';
+    if($result) echo "<br><br>Thank Your for registering. <a href=\'../index.php'>return to home</a> to continue<br><br>";
   }
 
   function test_input($data)
@@ -287,19 +279,11 @@ if ($uploadOk == 0) {
 
           <!-- inserting on image file https://stackoverflow.com/questions/3828554/how-to-allow-input-type-file-to-accept-only-image-files -->
           <input class="pfp" type="file" id = "pfp" name = "pfp">
-          
-          <!-- <select class="account-input account-selection" name="userType" id="userType" title="userType">
-            <option value="" disabled selected>User Type</option>
-              <option value="student">Student</option>
-              <option value="instructor">Instructor</option>
-          </select>
-          <input class="account-input" id="instructorID" name="instructorID" type="number" placeholder="Instructor ID (Only for Instructors) "><br> -->
+        
 
           <input class="account-input" id="fullName" name="fullName" type="text" placeholder="Full Name" value="<?php echo $fullName; ?>"/><br>
           <span id="fullNameErr" class="error"><?php echo $fullNameErr; ?></span>
 
-
-          <!-- <input class="account-input" id="email" name="email" type="email" placeholder="Email"><br> -->
 
           <input  class="account-input" id="username" name="username" type="text" placeholder="username" value="<?php echo $username; ?>"/><br>
           <span id="usernameErr" class="error"><?php echo $usernameErr; ?></span>

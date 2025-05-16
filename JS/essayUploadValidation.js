@@ -59,18 +59,6 @@ if(!essayTitle_regex.test(essayTitle_element.value)){
 
 
 
-	// Essay Rating
-let essayRating_element = document.getElementById('essayRating');
-let essayRating_regex = /^[0-9]$/;
-
-if(!essayRating_regex.test(essayRating_element.value)){
-	essayRating_element.style.backgroundColor = "#ff5555";
-
-	var essayRatingErr = document.getElementById('essayRatingErr');
-	essayRatingErr.innerHTML = "Please enter a valid Essay Title";		
-	valid = false;
-}
-
 
 	// Essay First Paragraph
 let essayFirstParagraph_element = document.getElementById('essayFirstParagraph');
@@ -105,16 +93,16 @@ if(!essayFirstParagraph_regex.test(essayFirstParagraph_element.value)){
 
 
 	
-// 	//code to validate the essay date
-// 	let essayDate_element = document.getElementById('essayDate');
-// 	let essayDate_regex = [a-zA-Z]+[ a-zA-Z]*;
+	//essay date
+	let essayDate_element = document.getElementById('essayDate');
+	let essayDate_regex = /^\d{4}-\d{2}-\d{2}$/;
 
-// 	if (!essayDate_regex.test(essayDate_element.value)){
-// 		essayDate_element.value = "";
-// 		essayDate_element.focus();
-// 		essayDate_element.style.backgroundColor = "#ff5555";
-// 		valid = false;
-// }
+	if (!essayDate_regex.test(essayDate_element.value)){
+		essayDate_element.value = "";
+		essayDate_element.focus();
+		essayDate_element.style.backgroundColor = "#ff5555";
+		valid = false;
+}
 
 
 
@@ -148,7 +136,6 @@ if(!fullEssay_regex.test(fullEssay_element.value)){
 	return valid;
 }
 
-// This function is used to remove the error messages from the page when the user resubmits the form... e.g. if a user makes an error with fname and lname and tries to correct them both, however the system finds that there is still an error with the last name, it is important that they send the user only the error message for the last name on the second try.  To accomplish this we simply clear all the errors each time the user attempts to submit the form and the validation code will reinsert any errors which were made on the subsequent submission.
 function clearErrors(){
 	var errors = document.getElementsByClassName('error');
 	for(var i = 0; i < errors.length; i++){

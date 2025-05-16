@@ -10,7 +10,7 @@ if (isset($_GET['logout'])) {
 $message = "";
 if (isset($_SESSION['username'])) {
     $message = "<div>
-    Welcome back, ".htmlspecialchars($_SESSION['fullName'])." 
+    Welcome back, ".($_SESSION['fullName'])." 
         </div>";
 }
 ?>
@@ -35,20 +35,28 @@ if (isset($_SESSION['username'])) {
         <ul class="Navigation">
            <li><img class ="navbar-logo" src ="IMGS/LOGO/Navbar-Logo.png" alt=""></li> 
             <li class="nav-option" ><a class ="nav-links" href="Index.php">Home</a></li>
-            <li class="nav-option"><a class ="nav-links" href="HTML/About.html">About</a></li>
+            <li class="nav-option"><a class ="nav-links" href="PHP/About.php">About</a></li>
             <li class="nav-option"><a class ="nav-links" href="PHP/EssayList.php">Essays</a></li>
-            <li class="nav-option"><a class ="nav-links" href="HTML/Contact.html">Contact</a></li>
+            <li class="nav-option"><a class ="nav-links" href="PHP/Contact.php">Contact</a></li>
+            <?php if (isset($_SESSION['userType']) && $_SESSION['userType'] === 'instructor') {
+            echo '<li class="nav-option"><a class="nav-links" href="PHP/UngradedEssays.php">Ungraded Essays</a></li>';
+        }
+        ?>
         </ul>
-        
         <div class="profile-dropdown">
             <div class="profile-icon">
-                <img src="<?php echo !empty($_SESSION['pfp']) ? $_SESSION['pfp'] : 'IMGS/Profile-pictures/avatar1.png'; ?>" alt="Profile">
-            </div>
+                <?php if (!empty($_SESSION['pfp'])) {
+                    echo '<img src="'.($_SESSION['pfp']).'" alt="Profile">';
+                } else {
+                    echo '<img src="IMGS/Profile-pictures/avatar1.png" alt="Profile">';
+                }
+                
+?>            </div>
             <div class="profile-selection">
                 <a class="profile-options">Profile</a>
                 <a class="profile-options" href="">Preference</a>
                 <?php if (isset($_SESSION['username'])) { 
-                    echo '<a class="profile-options" href="?logout=1">Logout</a>';
+                    echo '<a class="profile-options" href="?logout=1">Logout</a>';          //Logout option code sampled from: https://stackoverflow.com/questions/12209438/logout-button-php
                 } else { 
                     echo '<a class="profile-options" href="#login">Login</a>';
                 } ?>
@@ -127,6 +135,7 @@ if (isset($_SESSION['username'])) {
 
 				if ($login_success){
                     if ($login_success){
+                        $_SESSION['userType'] = $userType;
                         $_SESSION['username'] = $row['username'];
                         $_SESSION['fullName'] = $row['fullName'];
                         
@@ -199,8 +208,6 @@ if (isset($_SESSION['username'])) {
     } else {
         echo $message;
     }
-    	mysqli_close($conn);
-
     ?>
 
 <img class = "logo" src="IMGS/LOGO/Logo.png" alt="Ministry Of education Logo">
@@ -213,32 +220,40 @@ if (isset($_SESSION['username'])) {
 
 <div class="top-essays">
 
-<div class="essay">
-    <p class="essay-info">Student name: <span>Bruce Charles</span></p>
-    <p class="essay-info">Essay name: <span>Balanced Diet</span></p>
-    <p class="essay-info">Date: <span>3rd January 2024</span></p>
-    <p class="essay-info">Essay Rating: <span>10/10</span></p>
+<?php
+    $query = "select * from essaylist where isPublic = 1 order by essayRating desc limit 3 ";
+    $result = null; 
+    try { 
+    $result = mysqli_query($conn, $query);  
+    } catch (Exception $e){ 
+    echo '<br><br>Error occurred: ' . mysqli_error($conn) . '<br><br>'; 
+    echo "Please <a href=\"..\index.html\">return to form</a> to resubmit";  
+    }
 
-    <button class="view-essay" title="view-essay" onclick="location.href='HTML/Essays/Balanced-Diet.html'">View</button>	
-</div>
+    
+    if ($result) {  
+        if (mysqli_num_rows($result) > 0) { 
+            while ($row = mysqli_fetch_assoc($result)) {                 
+                echo "
+                <div class='essay'>
+                    <p class='essay-info'>Username: <span>{$row['username']}</span></p>
+                    <p class='essay-info'>Student name: <span>{$row['studentName']}</span></p>
+                    <p class='essay-info'>Essay Title: <span>{$row['essayTitle']}</span></p>
+                    <p class='essay-info'>Essay Rating: <span>{$row['essayRating']}</span></p>
+                    <p class='essay-info'>Grade: <span>{$row['grade']}</span></p>
+                    <p class='essay-info'>First Paragraph: <span>{$row['essayFirstParagraph']}</span></p>
 
-<div class="essay">
-    <p class="essay-info">Student name: <span>Jenny Ally</span></p>
-    <p class="essay-info">Essay name: <span>Christmas</span></p>
-    <p class="essay-info">Date: <span>5th October 2024</span></p>
-    <p class="essay-info">Essay Rating: <span>10/10</span></p>
+                    
+                    <a href=\"php/essayDetails.php?essayID={$row['essayID']}\" class='view-essay'>View</a>
+                </div>  ";
+            }
+        } else {
+            echo "<br>Query executed. No records found ."; 
+        }
+    } 
+        	mysqli_close($conn);
 
-    <button class="view-essay" title="view-essay" onclick="location.href='HTML/Essays/Christmas.html'">View</button>	
-</div>
-
-<div class="essay">
-    <p class="essay-info">Student name: <span>Christian teal</span></p>
-    <p class="essay-info">Essay name: <span>Co-Education</span></p>
-    <p class="essay-info">Date: <span>25th February 2024</span></p>
-    <p class="essay-info">Essay Rating: <span>9/10</span></p>
-
-    <button class="view-essay" title="view-essay" onclick="location.href='HTML/Essays/Co-Education.html'">View</button>	
-    </div>
+    ?>
 </div>
 
 <script type="text/javascript" src="JS/validations.js"></script>

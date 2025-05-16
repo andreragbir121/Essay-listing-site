@@ -1,6 +1,14 @@
 <?php
 session_start();
+require_once "dbase_connect.php";
+
+
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: ../Index.php");;
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -19,20 +27,37 @@ session_start();
     <ul class="Navigation">
         <li><img class ="navbar-logo" src ="../IMGS/LOGO/Navbar-Logo.png" alt=""></li> 
          <li class="nav-option" ><a class ="nav-links" href="../Index.php">Home</a></li>
-         <li class="nav-option"><a class ="nav-links" href="About.html">About</a></li>
+         <li class="nav-option"><a class ="nav-links" href="About.php">About</a></li>
          <li class="nav-option"><a class ="nav-links" href="../PHP/EssayList.php">Essays</a></li>
          <li class="nav-option"><a class ="nav-links" href="Contact.php">Contact</a></li>
-     </ul>
-
-    <div class="profile-dropdown">
-        <div class="profile-icon"><img src="../IMGS/Profile-pictures/avatar1.png" alt="profile photo of users choice"></div>
-        <div class="profile-selection">
-            <a class="profile-options">Profile</a>
-            <a class="profile-options" href="">Preference</a>
-            <a class="profile-options" href="">Logout</a>
-        </div>
-    </div>
+   <?php if (isset($_SESSION['userType']) && $_SESSION['userType'] === 'instructor') {
+            echo '<li class="nav-option"><a class="nav-links" href="UngradedEssays.php">Ungraded Essays</a></li>';
+        }
+        ?>
+        </ul>
+        <div class="profile-dropdown">
+            <div class="profile-icon">
+                <?php if (!empty($_SESSION['pfp'])) {
+                    echo '<img src="'.($_SESSION['pfp']).'" alt="Profile">';
+                } else {
+                    echo '<img src="IMGS/Profile-pictures/avatar1.png" alt="Profile">';
+                }
+                
+?>           
+            </div>
+            <div class="profile-selection">
+                <a class="profile-options">Profile</a>
+                <a class="profile-options" href="">Preference</a>
+                <?php if (isset($_SESSION['username'])) { 
+                    echo '<a class="profile-options" href="?logout=1">Logout</a>';          //Logout option code sampled from: https://stackoverflow.com/questions/12209438/logout-button-php
+                } else { 
+                    echo '<a class="profile-options" href="#login">Login</a>';
+                } ?>
+                </div>
+            </div>
     </nav>
+
+    
     <div class="php-container">
 <?php
 //connecting to dbase
@@ -112,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["submit"])) {
 
 
 
- $qry = "INSERT INTO contact (fullName, Email, phNumber, comment) VALUES ('$fullName', '$Email', '$phNumber', '$comment')";
+ $qry = "insert into contact (fullName, Email, phNumber, comment) values ('$fullName', '$Email', '$phNumber', '$comment')";
 
     $result = null;
 

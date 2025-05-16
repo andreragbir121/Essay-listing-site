@@ -34,23 +34,23 @@ if(!username_regex.test(username_element.value)){
 
 
 
-// 	//code to validate the username
-// 	let birthDate_element = document.getElementById('birthDate');
-// 	let birthDate_regex = [a-zA-Z]+[ a-zA-Z]*;
+	//code to validate the username
+	let birthDate_element = document.getElementById('birthDate');
+	let birthDate_regex =/^\d{4}-\d{2}-\d{2}$/;
 
-// 	if (!birthDate_regex.test(birthDate_element.value)){
-// 		birthDate_element.value = "";
-// 		birthDate_element.focus();
-// 		birthDate_element.style.backgroundColor = "#ff5555";
-// 		valid = false;
-// }
+	if (!birthDate_regex.test(birthDate_element.value)){
+		birthDate_element.value = "";
+		birthDate_element.focus();
+		birthDate_element.style.backgroundColor = "#ff5555";
+		valid = false;
+}
 
 
 	//code to validate the Parent Name
 	let parentName_element = document.getElementById('parentName');
 	let parentName_regex =/[a-zA-Z]+[ a-zA-Z]*/;
 	
-	if(!parentName_regex.test(username_element.value)){
+	if(!parentName_regex.test(parentName_element.value)){
 		parentName_element.style.backgroundColor = "#ff5555";
 	
 		var parentNameErr = document.getElementById('parentNameErr');

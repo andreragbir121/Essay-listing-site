@@ -4,7 +4,6 @@ function validate(){
 	
 	let valid = true;
 		
-	// full name validation - supposed to be for both registration and contact form:
 	let fullName_element = document.getElementById('fullName');
 	let fullName_regex = /[a-zA-Z]+[ a-zA-Z]*/;
 
@@ -30,7 +29,7 @@ function validate(){
 
 	let phNumber_element = document.getElementById('phNumber');
 	let phNumber_regex = /^[0-9]{10,15}$/;
-	if(!phNumber_regex.test(Email_element.value)){
+	if(!phNumber_regex.test(phNumber_element.value)){
 		phNumber_element.style.backgroundColor = "#ff5555";
 
 		var phNumberErr = document.getElementById('phNumberErr');
@@ -53,7 +52,6 @@ function validate(){
 	return valid;
 }
 
-// This function is used to remove the error messages from the page when the user resubmits the form... e.g. if a user makes an error with fname and lname and tries to correct them both, however the system finds that there is still an error with the last name, it is important that they send the user only the error message for the last name on the second try.  To accomplish this we simply clear all the errors each time the user attempts to submit the form and the validation code will reinsert any errors which were made on the subsequent submission.
 function clearErrors(){
 	var errors = document.getElementsByClassName('error');
 	for(var i = 0; i < errors.length; i++){
